@@ -6,13 +6,15 @@ namespace WGame
     [RequireComponent(typeof(Rigidbody))]
     public class CharacterMovement : MonoBehaviour
     {
-        [SerializeField] [Range(1, 10)] private float _speed = 1;
+        [SerializeField] [Range(1, 10)] private float _normalSpeed = 1;
+        [SerializeField] [Range(1, 10)] private float _loadedSpeed = 1;
         [SerializeField] [Range(1, 10)] private int _turnSpeed = 5;
         [SerializeField] private LayerMask _groundLayer;
 
         private Rigidbody _rigidbody;
         private Transform _transform;
         private Vector2 _input;
+        private float _speed;
         private Action<float> _velocityChanged;
 
         public Transform Helper { get; private set; }
@@ -24,7 +26,9 @@ namespace WGame
 
             _rigidbody = GetComponent<Rigidbody>();
             _transform = transform;
-            Helper = new GameObject("Helper").transform;        
+            Helper = new GameObject("Helper").transform;
+
+            _speed = _normalSpeed;
         }
 
         private void FixedUpdate()
@@ -43,6 +47,11 @@ namespace WGame
 
                 Move(hit, moveDirection);
             }
+        }
+
+        public void ChangeSpeed(bool isLoaded)
+        {
+            _speed = isLoaded ? _loadedSpeed : _normalSpeed;
         }
 
         private void ResetRigidbodyVelocities()

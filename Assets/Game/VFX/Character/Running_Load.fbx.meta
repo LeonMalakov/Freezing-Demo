@@ -106,6 +106,7 @@ ModelImporter:
     normalSmoothingSource: 0
   referencedClips:
   - b781e6a5d78dc8648951123be28f3178
+  - 9640f57c578be1246a85b04a16f1b465
   importAnimation: 1
   humanDescription:
     serializedVersion: 3
@@ -550,7 +551,7 @@ ModelImporter:
       scale: {x: 1, y: 1, z: 1}
     - name: mixamorig:Hips
       parentName: Running_Load(Clone)
-      position: {x: -0.006732226, y: 2.0801125, z: -0.005077613}
+      position: {x: -0.006732226, y: 2.165, z: -0.005077613}
       rotation: {x: -0.0063386974, y: 0.064627066, z: 0.05394559, w: 0.99643016}
       scale: {x: 1, y: 1, z: 1}
     - name: mixamorig:LeftUpLeg
@@ -686,7 +687,7 @@ ModelImporter:
     - name: mixamorig:LeftHandPinky2
       parentName: mixamorig:LeftHandPinky1
       position: {x: -0.065099, y: 0.002003, z: 0.005558}
-      rotation: {x: 0.0016458607, y: 0.0021091464, z: 0.015399966, w: 0.9998779}
+      rotation: {x: 0.0016458605, y: 0.0021091464, z: 0.0153999645, w: 0.9998779}
       scale: {x: 1, y: 1, z: 1}
     - name: mixamorig:LeftHandPinky3
       parentName: mixamorig:LeftHandPinky2
@@ -811,7 +812,7 @@ ModelImporter:
     - name: mixamorig:RightHandMiddle2
       parentName: mixamorig:RightHandMiddle1
       position: {x: 0.061575998, y: 0.00141, z: 0.00094099995}
-      rotation: {x: -0.0002427473, y: -0.0031965282, z: 0.0069278753, w: 0.99997085}
+      rotation: {x: -0.00024274731, y: -0.0031965282, z: 0.006927876, w: 0.99997085}
       scale: {x: 1, y: 1, z: 1}
     - name: mixamorig:RightHandMiddle3
       parentName: mixamorig:RightHandMiddle2
