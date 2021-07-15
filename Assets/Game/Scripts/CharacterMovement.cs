@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace WGame
@@ -6,28 +7,30 @@ namespace WGame
     public class CharacterMovement : MonoBehaviour
     {
         [SerializeField] [Range(1, 10)] private float _speed = 1;
+        [SerializeField] [Range(1, 10)] private int _turnSpeed = 5;
 
         private Rigidbody _rigidbody;
         private Transform _transform;
         private Vector2 _input;
-        private Transform _helper;
+        private Action<float> _velocityChanged;
 
-        public Transform Helper => _helper;
+        public Transform Helper { get; private set; }
         private Ray GroundRay => new Ray(_transform.position + _transform.up * 0.1f, -_transform.up);
 
-        private void Awake()
+        public void Init(Action<float> velocityChanged)
         {
+            _velocityChanged = velocityChanged;
+
             _rigidbody = GetComponent<Rigidbody>();
             _transform = transform;
-
-            _helper = new GameObject("Helper").transform;        
+            Helper = new GameObject("Helper").transform;        
         }
 
         private void FixedUpdate()
         {
             if (Physics.Raycast(GroundRay, out var hit))
             {
-                Vector3 helperForward = Vector3.Cross(_helper.right, hit.normal);
+                Vector3 helperForward = Vector3.Cross(Helper.right, hit.normal);
                 UpdateHelper(hit, helperForward);
 
                 Vector3 moveDirection = CalculateMoveDirection(hit, helperForward);
@@ -46,8 +49,8 @@ namespace WGame
 
         private void UpdateHelper(RaycastHit hit, Vector3 helperForward)
         {
-            _helper.rotation = Quaternion.LookRotation(helperForward, hit.normal);
-            _helper.position = _transform.position;
+            Helper.rotation = Quaternion.LookRotation(helperForward, hit.normal);
+            Helper.position = _transform.position;
         }
 
         private void Move(RaycastHit hit, Vector3 moveDirection)
@@ -55,6 +58,8 @@ namespace WGame
             Vector3 move = moveDirection * _speed;
             Vector3 nextPosition = hit.point + move * Time.fixedDeltaTime;
             _rigidbody.MovePosition(nextPosition);
+
+            _velocityChanged?.Invoke(move.magnitude);
         }
 
         private Vector3 CalculateMoveDirection(RaycastHit hit, Vector3 helperForward)
@@ -76,7 +81,7 @@ namespace WGame
             if (moveDirection != Vector3.zero)
             {
                 var rot = Quaternion.LookRotation(moveDirection, hit.normal);
-                _transform.rotation = Quaternion.Lerp(_transform.rotation, rot, Time.fixedDeltaTime * 3);
+                _transform.rotation = Quaternion.Lerp(_transform.rotation, rot, Time.fixedDeltaTime * _turnSpeed);
             }
         }
     }
