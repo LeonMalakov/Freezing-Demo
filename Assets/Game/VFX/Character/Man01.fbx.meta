@@ -13,7 +13,7 @@ ModelImporter:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
     resampleCurves: 1
-    optimizeGameObjects: 0
+    optimizeGameObjects: 1
     motionNodeName: 
     rigImportErrors: 
     rigImportWarnings: 
@@ -28,7 +28,8 @@ ModelImporter:
     animationPositionError: 0.5
     animationScaleError: 0.5
     animationWrapMode: 0
-    extraExposedTransformPaths: []
+    extraExposedTransformPaths:
+    - Man_Rig/Hips/LowerSpine/Chest/Shoulder.R/UpperArm.R/LowerArm.R/Hand.R
     extraUserProperties: []
     clipAnimations: []
     isReadable: 0
@@ -72,7 +73,8 @@ ModelImporter:
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
     blendShapeNormalImportMode: 1
     normalSmoothingSource: 0
-  referencedClips: []
+  referencedClips:
+  - b781e6a5d78dc8648951123be28f3178
   importAnimation: 0
   humanDescription:
     serializedVersion: 3

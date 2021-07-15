@@ -28,6 +28,8 @@ namespace WGame
 
         private void FixedUpdate()
         {
+            ResetRigidbodyVelocities();
+
             if (Physics.Raycast(GroundRay, out var hit))
             {
                 Vector3 helperForward = Vector3.Cross(Helper.right, hit.normal);
@@ -40,6 +42,12 @@ namespace WGame
 
                 Move(hit, moveDirection);
             }
+        }
+
+        private void ResetRigidbodyVelocities()
+        {
+            _rigidbody.velocity = Vector3.zero;
+            _rigidbody.angularVelocity = Vector3.zero;
         }
 
         public void SetMove(Vector2 input)

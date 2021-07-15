@@ -14,6 +14,20 @@ namespace WGame
 
         private void Update()
         {
+            HandleMovement();
+            HandleInteraction();
+        }
+
+        private void HandleInteraction()
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                _character.Interact();
+            }
+        }
+
+        private void HandleMovement()
+        {
             Vector2 input = new Vector2(
                 x: Input.GetKey(KeyCode.A) ? -1 : Input.GetKey(KeyCode.D) ? 1 : 0,
                 y: Input.GetKey(KeyCode.W) ? 1 : Input.GetKey(KeyCode.S) ? -1 : 0);
