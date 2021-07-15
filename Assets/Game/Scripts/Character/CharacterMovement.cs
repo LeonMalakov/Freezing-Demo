@@ -15,6 +15,7 @@ namespace WGame
         private Transform _transform;
         private Vector2 _input;
         private float _speed;
+        private bool _isEnabled;
         private Action<float> _velocityChanged;
 
         public Transform Helper { get; private set; }
@@ -29,12 +30,32 @@ namespace WGame
             Helper = new GameObject("Helper").transform;
 
             _speed = _normalSpeed;
+
+            SetIsEnabledState(true);
+        }
+
+        public void SetIsEnabledState(bool isEnabled)
+        {
+            _isEnabled = isEnabled;
+        }
+
+        public void ChangeSpeed(bool isLoaded)
+        {
+            _speed = isLoaded ? _loadedSpeed : _normalSpeed;
         }
 
         private void FixedUpdate()
         {
             ResetRigidbodyVelocities();
 
+            if (_isEnabled)
+            {
+                PerformMove();
+            }
+        }
+
+        private void PerformMove()
+        {
             if (Physics.Raycast(GroundRay, out var hit, _groundLayer))
             {
                 Vector3 helperForward = Vector3.Cross(Helper.right, hit.normal);
@@ -47,11 +68,6 @@ namespace WGame
 
                 Move(hit, moveDirection);
             }
-        }
-
-        public void ChangeSpeed(bool isLoaded)
-        {
-            _speed = isLoaded ? _loadedSpeed : _normalSpeed;
         }
 
         private void ResetRigidbodyVelocities()

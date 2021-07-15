@@ -14,16 +14,21 @@ namespace WGame
 
         private void Update()
         {
+            HandleAttack();
             HandleMovement();
             HandleInteraction();
+        }
+
+        private void HandleAttack()
+        {
+            if (Input.GetKeyDown(KeyCode.LeftControl))
+                _character.Attack();
         }
 
         private void HandleInteraction()
         {
             if (Input.GetKeyDown(KeyCode.Space))
-            {
                 _character.Interact();
-            }
         }
 
         private void HandleMovement()
