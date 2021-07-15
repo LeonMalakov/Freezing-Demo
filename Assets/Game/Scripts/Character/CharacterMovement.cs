@@ -8,6 +8,7 @@ namespace WGame
     {
         [SerializeField] [Range(1, 10)] private float _speed = 1;
         [SerializeField] [Range(1, 10)] private int _turnSpeed = 5;
+        [SerializeField] private LayerMask _groundLayer;
 
         private Rigidbody _rigidbody;
         private Transform _transform;
@@ -30,7 +31,7 @@ namespace WGame
         {
             ResetRigidbodyVelocities();
 
-            if (Physics.Raycast(GroundRay, out var hit))
+            if (Physics.Raycast(GroundRay, out var hit, _groundLayer))
             {
                 Vector3 helperForward = Vector3.Cross(Helper.right, hit.normal);
                 UpdateHelper(hit, helperForward);

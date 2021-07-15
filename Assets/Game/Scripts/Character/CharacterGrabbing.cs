@@ -39,6 +39,8 @@ namespace WGame
             if (Grabbed != null)
             {
                 Grabbed.transform.parent = _grabbedLastParent;
+                Grabbed.transform.rotation = transform.rotation;
+                Grabbed.EarthPlacer.Place();
                 Grabbed = null;
 
                 _isGrabbedChanged?.Invoke(false);
