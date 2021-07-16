@@ -3,11 +3,13 @@ using UnityEngine;
 
 namespace WGame
 {
-    public class Campfire : Interactivable
+    public class Campfire : GameBehaviour, IInteractivable
     {
         [SerializeField] [Range(0, 120)] private float _startLifeTime = 60;
 
         private float _lifeTime;
+
+        public Vector3 Position => transform.position;
 
         public event Action Died;
 
@@ -22,9 +24,9 @@ namespace WGame
             CheckDie();
         }
 
-        public override bool Interact(Character character) => false;
+        public bool Interact(Character character) => false;
 
-        public override bool InteractWithItem(Character character, Item item)
+        public bool InteractWithItem(Character character, Item item)
         {
             AddItem(item);
             return true;
@@ -53,6 +55,14 @@ namespace WGame
         {
             Debug.Log("Fire died.");
             Died?.Invoke();
+        }
+
+        public void BecomeActive()
+        {
+        }
+
+        public void BecomeInactive()
+        {
         }
     }
 }

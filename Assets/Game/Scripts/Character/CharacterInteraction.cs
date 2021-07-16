@@ -9,7 +9,7 @@ namespace WGame
         [SerializeField] [Range(0, 10)] private float _range = 5;
 
         private Character _character;
-        private Interactivable _active;
+        private IInteractivable _active;
 
         public void Init(Character character)
         {
@@ -62,21 +62,21 @@ namespace WGame
             }
         }
 
-        private Interactivable GetClosestInteractivable()
+        private IInteractivable GetClosestInteractivable()
         {
-            IEnumerable<Interactivable> hits = GetInteractivables();
-            Interactivable closest = FindClosest(hits);
+            IEnumerable<IInteractivable> hits = GetInteractivables();
+            IInteractivable closest = FindClosest(hits);
 
             return closest;
         }
 
-        private Interactivable FindClosest(IEnumerable<Interactivable> hits)
+        private IInteractivable FindClosest(IEnumerable<IInteractivable> hits)
         {
             float minDistance = float.MaxValue;
-            Interactivable closest = null;
+            IInteractivable closest = null;
             foreach (var x in hits)
             {
-                float dist = Vector3.Distance(x.transform.position, transform.position);
+                float dist = Vector3.Distance(x.Position, transform.position);
                 if (dist < minDistance)
                 {
                     minDistance = dist;
@@ -87,14 +87,14 @@ namespace WGame
             return closest;
         }
 
-        private IEnumerable<Interactivable> GetInteractivables()
+        private IEnumerable<IInteractivable> GetInteractivables()
         {
             var hits = Physics.OverlapSphere(transform.position, _range)
-                           .Select(x => x.GetComponent<Interactivable>())
+                           .Select(x => x.GetComponent<IInteractivable>())
                            .Where(x => x != null);
 
             if (_character.IsGrabbing)
-                hits = hits.Except(new Interactivable[] { _character.Grabbed });
+                hits = hits.Except(new IInteractivable[] { _character.Grabbed });
 
             return hits;
         }

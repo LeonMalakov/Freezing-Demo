@@ -2,10 +2,12 @@
 
 namespace WGame
 {
-    public class Tree : MonoBehaviour, IAttackable
+    public class Tree : GameBehaviour, IAttackable
     {
         [SerializeField] [Range(0, 1000)] private int _health = 100;
         [SerializeField] [Range(1, 10)] private int _dropItemsCount = 3;
+
+        public ITreesOwner OriginFactory { get; set; }
 
         public void TakeDamage(int damage)
         {
@@ -27,7 +29,7 @@ namespace WGame
 
         public void Recycle()
         {
-            Destroy(gameObject);
+            OriginFactory.Reclaim(this);
         }
 
         private void SpawnItems()

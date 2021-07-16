@@ -2,18 +2,22 @@
 
 namespace WGame
 {
-    public class Item : Interactivable
+    public class Item : GameBehaviour, IInteractivable
     {
         [SerializeField] [Range(0, 120)] private float _lifeTimeToAdd = 20;
 
+        public IItemsOwner OriginFactory { get; set; }
+
         public float LifeTimeToAdd => _lifeTimeToAdd;
 
-        public override bool Interact(Character character)
+        public Vector3 Position => transform.position;
+
+        public bool Interact(Character character)
         {
             return character.Grab(this);
         }
 
-        public override bool InteractWithItem(Character character, Item item) => false;
+        public bool InteractWithItem(Character character, Item item) => false;
 
         public void DisableCollision()
         {
@@ -27,7 +31,15 @@ namespace WGame
 
         public void Recycle()
         {
-            Destroy(gameObject);
+            OriginFactory.Reclaim(this);
+        }
+
+        public void BecomeActive()
+        {
+        }
+
+        public void BecomeInactive()
+        {
         }
     }
 }
