@@ -6,8 +6,10 @@ namespace WGame
     {
         [SerializeField] private ItemsFactory _itemsFactory;
         [SerializeField] private TreesFactory _treesFactory;
+        [SerializeField] private EnemiesFactory _enemiesFactory;
         [SerializeField] private ItemSpawnPoint[] _itemsSpawnPoints;
         [SerializeField] private TreeSpawnPoint[] _treesSpawnPoints;
+        [SerializeField] private EnemySpawnPoint[] _enemiesSpawnPoints;
 
         private static Game _instance;
 
@@ -25,6 +27,7 @@ namespace WGame
         {
             CreateItems();
             CreateTrees();
+            CreateEnemies();
         }
 
         private void CreateTrees()
@@ -39,6 +42,12 @@ namespace WGame
                 CreateItem(item.transform.position, item.transform.rotation);
         }
 
+        private void CreateEnemies()
+        {
+            foreach (var item in _enemiesSpawnPoints)
+                CreateEnemy(item.transform.position, item.transform.rotation);
+        }
+
         public static Item CreateItem(Vector3 position, Quaternion rotation)
         {
             var instance = _instance._itemsFactory.Get();
@@ -51,6 +60,15 @@ namespace WGame
         public static Tree CreateTree(Vector3 position, Quaternion rotation)
         {
             var instance = _instance._treesFactory.Get();
+            instance.transform.position = position;
+            instance.transform.rotation = rotation;
+            instance.EarthPlacer.Place();
+            return instance;
+        }
+
+        public static Enemy CreateEnemy(Vector3 position, Quaternion rotation)
+        {
+            var instance = _instance._enemiesFactory.Get();
             instance.transform.position = position;
             instance.transform.rotation = rotation;
             instance.EarthPlacer.Place();

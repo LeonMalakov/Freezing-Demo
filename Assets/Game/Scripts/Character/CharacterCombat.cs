@@ -8,7 +8,6 @@ namespace WGame
     public class CharacterCombat : MonoBehaviour
     {
         [SerializeField] private Transform _attackPoint;
-        [SerializeField] private GameObject _weaponModel;
         [SerializeField] private Vector3 _attackShape;
         [SerializeField] private LayerMask _layers;
         [SerializeField] [Range(0, 500)] private int _damage = 20;
@@ -26,7 +25,6 @@ namespace WGame
         public void SetIsEnabledState(bool isEnabled)
         {
             _isEnabled = isEnabled;
-            _weaponModel.SetActive(_isEnabled);
         }
 
         public void Attack()
@@ -55,13 +53,18 @@ namespace WGame
         private IEnumerable<IAttackable> GetTargets()
         {
             var hits = Physics.OverlapBox(_attackPoint.position, _attackShape * 0.5f, _attackPoint.rotation, _layers);
-            var targets = hits.Select(x => x.GetComponent<IAttackable>())
+            var targets = hits
+                .Where(x => x.gameObject != gameObject)
+                .Select(x => x.GetComponent<IAttackable>())
                 .Where(x => x != null);
             return targets;
         }
 
         private void OnDrawGizmosSelected()
         {
+            if (_attackPoint == null)
+                return;
+
             var lastMatrix = Gizmos.matrix;
             Gizmos.color = Color.red;
             Matrix4x4 rotationMatrix = Matrix4x4.TRS(_attackPoint.position, _attackPoint.rotation, Vector3.one);

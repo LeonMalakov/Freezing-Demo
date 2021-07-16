@@ -12,12 +12,12 @@ namespace WGame
 
         public Vector3 Position => transform.position;
 
-        public bool Interact(Character character)
+        public bool Interact(Player character)
         {
             return character.Grab(this);
         }
 
-        public bool InteractWithItem(Character character, Item item) => false;
+        public bool InteractWithItem(Player character, Item item) => false;
 
         public void DisableCollision()
         {

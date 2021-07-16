@@ -6,10 +6,7 @@ namespace WGame
     [RequireComponent(typeof(Rigidbody))]
     public class CharacterMovement : MonoBehaviour
     {
-        [SerializeField] [Range(1, 10)] private float _normalSpeed = 1;
-        [SerializeField] [Range(1, 10)] private float _loadedSpeed = 1;
         [SerializeField] [Range(1, 10)] private int _turnSpeed = 5;
-        [SerializeField] private LayerMask _groundLayer;
 
         private Rigidbody _rigidbody;
         private Transform _transform;
@@ -19,7 +16,6 @@ namespace WGame
         private Action<float> _velocityChanged;
 
         public Transform Helper { get; private set; }
-        private Ray GroundRay => new Ray(_transform.position + _transform.up * 0.1f, -_transform.up);
 
         public void Init(Action<float> velocityChanged)
         {
@@ -29,8 +25,6 @@ namespace WGame
             _transform = transform;
             Helper = new GameObject("Helper").transform;
 
-            _speed = _normalSpeed;
-
             SetIsEnabledState(true);
         }
 
@@ -39,9 +33,14 @@ namespace WGame
             _isEnabled = isEnabled;
         }
 
-        public void ChangeSpeed(bool isLoaded)
+        public void SetSpeed(float speed)
         {
-            _speed = isLoaded ? _loadedSpeed : _normalSpeed;
+            _speed = speed;
+        }
+
+        public void SetMove(Vector2 input)
+        {
+            _input = input;
         }
 
         private void FixedUpdate()
@@ -56,7 +55,7 @@ namespace WGame
 
         private void PerformMove()
         {
-            if (Physics.Raycast(GroundRay, out var hit, _groundLayer))
+            if (Physics.Raycast(EarthPlacer.GroundRay(transform), out var hit, EarthPlacer.MaxRaycastDistance, EarthPlacer.GroundMask))
             {
                 Vector3 helperForward = Vector3.Cross(Helper.right, hit.normal);
                 UpdateHelper(hit, helperForward);
@@ -74,11 +73,6 @@ namespace WGame
         {
             _rigidbody.velocity = Vector3.zero;
             _rigidbody.angularVelocity = Vector3.zero;
-        }
-
-        public void SetMove(Vector2 input)
-        {
-            _input = input;
         }
 
         private void UpdateHelper(RaycastHit hit, Vector3 helperForward)

@@ -8,21 +8,36 @@ namespace WGame
     {
         [SerializeField] [Range(0, 10)] private float _range = 5;
 
-        private Character _character;
+        private bool _isEnabled;
+        private Player _character;
         private IInteractivable _active;
 
-        public void Init(Character character)
+        public void Init(Player character)
         {
             _character = character;
+            SetIsEnabledState(true);
+        }
+
+        public void SetIsEnabledState(bool isEnabled)
+        {
+            _isEnabled = isEnabled;
+
+            if (_isEnabled == false)
+                SetActive(null);
         }
 
         private void FixedUpdate()
         {
-            UpdateActive();
+            if (_isEnabled)
+            {
+                UpdateActive();
+            }
         }
 
         public void Interact()
         {
+            if (!_isEnabled) return;
+
             if (_active != null)
             {
                 if (_character.IsGrabbing)
@@ -50,6 +65,11 @@ namespace WGame
         {
             var newActive = GetClosestInteractivable();
 
+            SetActive(newActive);
+        }
+
+        private void SetActive(IInteractivable newActive)
+        {
             if (_active != newActive)
             {
                 if (_active != null)

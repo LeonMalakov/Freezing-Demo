@@ -2,6 +2,7 @@
 
 namespace WGame
 {
+    [RequireComponent(typeof(EarthPlacer))]
     public class GameBehaviour : MonoBehaviour
     {
         public EarthPlacer EarthPlacer { get; private set; }

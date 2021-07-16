@@ -4,12 +4,16 @@ namespace WGame
 {
     public class EarthPlacer : MonoBehaviour
     {
-        private Ray GroundRay => new Ray(transform.position + transform.up * 0.1f, -transform.up);
+        private const int GroundLayerNumber = 8;
+        public const int MaxRaycastDistance = 100;
+
+        public static LayerMask GroundMask => 1 << GroundLayerNumber;
+        public static Ray GroundRay(Transform t) => new Ray(t.position + t.up * 0.1f, -t.up);
 
         [ContextMenu("Place")]
         public void Place()
         {
-            if (Physics.Raycast(GroundRay, out var hit))
+            if (Physics.Raycast(GroundRay(transform), out var hit, MaxRaycastDistance, GroundMask))
             {
                 RotateByGroundNormal(hit);
                 PlaceAtGround(hit);

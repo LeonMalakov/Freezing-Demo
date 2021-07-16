@@ -6,9 +6,9 @@ namespace WGame
     {
         Vector3 Position { get; }
 
-        bool Interact(Character character);
+        bool Interact(Player character);
 
-        bool InteractWithItem(Character character, Item item);
+        bool InteractWithItem(Player character, Item item);
 
         void BecomeActive();
 

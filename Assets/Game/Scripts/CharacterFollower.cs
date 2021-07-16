@@ -4,7 +4,7 @@ namespace WGame
 {
     public class CharacterFollower : MonoBehaviour
     {
-        [SerializeField] private Character _target;
+        [SerializeField] private Player _target;
 
         private Vector3 _positionOffset;
         private Quaternion _rotationOffset;

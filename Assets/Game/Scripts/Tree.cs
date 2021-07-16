@@ -10,6 +10,7 @@ namespace WGame
         [SerializeField] [Range(1, 10)] private int _dropItemsCount = 3;
 
         public ITreesOwner OriginFactory { get; set; }
+        public bool IsAlive => _health > 0;
 
         public void TakeDamage(int damage)
         {

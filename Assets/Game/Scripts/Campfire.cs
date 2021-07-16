@@ -24,9 +24,9 @@ namespace WGame
             CheckDie();
         }
 
-        public bool Interact(Character character) => false;
+        public bool Interact(Player character) => false;
 
-        public bool InteractWithItem(Character character, Item item)
+        public bool InteractWithItem(Player character, Item item)
         {
             AddItem(item);
             return true;

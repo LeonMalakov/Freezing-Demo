@@ -2,14 +2,14 @@ using UnityEngine;
 
 namespace WGame
 {
-    [RequireComponent(typeof(Character))]
+    [RequireComponent(typeof(Player))]
     public class PlayerController : MonoBehaviour
     {
-        private Character _character;
+        private Player _character;
 
         private void Awake()
         {
-            _character = GetComponent<Character>();
+            _character = GetComponent<Player>();
         }
 
         private void Update()
