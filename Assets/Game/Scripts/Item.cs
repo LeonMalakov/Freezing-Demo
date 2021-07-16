@@ -15,6 +15,16 @@ namespace WGame
 
         public override bool InteractWithItem(Character character, Item item) => false;
 
+        public void DisableCollision()
+        {
+            GetComponent<Collider>().enabled = false;
+        }
+
+        public void EnableCollision()
+        {
+            GetComponent<Collider>().enabled = true;
+        }
+
         public void Recycle()
         {
             Destroy(gameObject);

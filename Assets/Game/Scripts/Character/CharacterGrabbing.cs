@@ -25,6 +25,7 @@ namespace WGame
             Grabbed = item;
             _grabbedLastParent = Grabbed.transform.parent;
 
+            Grabbed.DisableCollision();
             Grabbed.transform.parent = _anchor;
             Grabbed.transform.localPosition = Vector3.zero;
             Grabbed.transform.localRotation = Quaternion.identity;
@@ -38,6 +39,7 @@ namespace WGame
         {
             if (Grabbed != null)
             {
+                Grabbed.EnableCollision();
                 Grabbed.transform.parent = _grabbedLastParent;
                 Grabbed.transform.rotation = transform.rotation;
                 Grabbed.EarthPlacer.Place();
