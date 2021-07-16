@@ -123,6 +123,49 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &63874245
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 63874247}
+  - component: {fileID: 63874246}
+  m_Layer: 0
+  m_Name: TreePoint (8)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &63874246
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 63874245}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7e6ff9fed224484897b51fd610e7d9b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &63874247
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 63874245}
+  m_LocalRotation: {x: 0.53337884, y: 0.13037011, z: 0.8315758, w: 0.08362036}
+  m_LocalPosition: {x: -3.6883698, y: -48.062855, z: 11.686407}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 387926533}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 187.332, y: -113.597, z: -16.28601}
 --- !u!1 &106228944
 GameObject:
   m_ObjectHideFlags: 0
@@ -525,9 +568,57 @@ Transform:
   - {fileID: 1449145415}
   - {fileID: 130858766}
   - {fileID: 1876874295}
+  - {fileID: 903148895}
+  - {fileID: 811651053}
+  - {fileID: 2075198883}
+  - {fileID: 496750238}
+  - {fileID: 63874247}
   m_Father: {fileID: 1605095510}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &496750237
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 496750238}
+  - component: {fileID: 496750239}
+  m_Layer: 0
+  m_Name: TreePoint (7)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &496750238
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 496750237}
+  m_LocalRotation: {x: 0.98793286, y: 0, z: 0, w: 0.15488297}
+  m_LocalPosition: {x: -3.5841124, y: -49.28, z: 7.9}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 387926533}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 162.18, y: 0, z: 0}
+--- !u!114 &496750239
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 496750237}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7e6ff9fed224484897b51fd610e7d9b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &594033297
 GameObject:
   m_ObjectHideFlags: 0
@@ -585,6 +676,11 @@ MonoBehaviour:
   - {fileID: 1449145416}
   - {fileID: 130858767}
   - {fileID: 1876874296}
+  - {fileID: 903148896}
+  - {fileID: 811651054}
+  - {fileID: 2075198884}
+  - {fileID: 496750239}
+  - {fileID: 63874246}
 --- !u!1 &771312039
 GameObject:
   m_ObjectHideFlags: 0
@@ -715,6 +811,49 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _target: {fileID: 126027776}
+--- !u!1 &811651052
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 811651053}
+  - component: {fileID: 811651054}
+  m_Layer: 0
+  m_Name: TreePoint (5)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &811651053
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 811651052}
+  m_LocalRotation: {x: 0.59110147, y: -0.48478466, z: -0.1210906, w: 0.63318247}
+  m_LocalPosition: {x: -18.629, y: -22.845, z: 17.995}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 387926533}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 39.135, y: -102.572, z: -69.482}
+--- !u!114 &811651054
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 811651052}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7e6ff9fed224484897b51fd610e7d9b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &888857733
 GameObject:
   m_ObjectHideFlags: 0
@@ -874,6 +1013,49 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 894585987}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7e6ff9fed224484897b51fd610e7d9b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &903148894
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 903148895}
+  - component: {fileID: 903148896}
+  m_Layer: 0
+  m_Name: TreePoint (4)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &903148895
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 903148894}
+  m_LocalRotation: {x: 0.57797456, y: -0.12718172, z: 0.17323196, w: 0.78724897}
+  m_LocalPosition: {x: -16.54, y: -22.63, z: 18.94}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 387926533}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 72.57, y: 0, z: 24.82}
+--- !u!114 &903148896
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 903148894}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a7e6ff9fed224484897b51fd610e7d9b, type: 3}
@@ -1443,6 +1625,49 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1 &2075198882
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2075198883}
+  - component: {fileID: 2075198884}
+  m_Layer: 0
+  m_Name: TreePoint (6)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2075198883
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2075198882}
+  m_LocalRotation: {x: 0.33133054, y: -0.7907323, z: -0.5042657, w: 0.10333704}
+  m_LocalPosition: {x: -17.752876, y: -24.116302, z: 18.818832}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 387926533}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: -46.803, y: -133.372, z: -66.598}
+--- !u!114 &2075198884
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2075198882}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7e6ff9fed224484897b51fd610e7d9b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2080474268
 GameObject:
   m_ObjectHideFlags: 0
