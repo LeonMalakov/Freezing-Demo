@@ -54,7 +54,7 @@ namespace WGame
 
         private IEnumerable<IAttackable> GetTargets()
         {
-            var hits = Physics.OverlapBox(_attackPoint.position, _attackShape, _attackPoint.rotation, _layers);
+            var hits = Physics.OverlapBox(_attackPoint.position, _attackShape * 0.5f, _attackPoint.rotation, _layers);
             var targets = hits.Select(x => x.GetComponent<IAttackable>())
                 .Where(x => x != null);
             return targets;
@@ -66,7 +66,7 @@ namespace WGame
             Gizmos.color = Color.red;
             Matrix4x4 rotationMatrix = Matrix4x4.TRS(_attackPoint.position, _attackPoint.rotation, Vector3.one);
             Gizmos.matrix = rotationMatrix;
-            Gizmos.DrawWireCube(Vector3.zero, _attackShape * 0.5f);
+            Gizmos.DrawWireCube(Vector3.zero, _attackShape);
             Gizmos.matrix = lastMatrix;
         }
     }
