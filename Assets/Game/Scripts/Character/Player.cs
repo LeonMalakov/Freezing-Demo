@@ -33,16 +33,33 @@ namespace WGame
         private CharacterGrabbing _grabbing;
         private CharacterInteraction _interaction;
         private CharacterCombat _combat;
+        private Stat _health;
+        private Stat _warm;
         private bool _isInWarmArea;
 
-        public int Health { get; private set; }
-        public int Warm { get; private set; }
+        public int MaxHealth => _maxHealth;
+        public int MaxWarm => _maxWarm;
+        public int Health => _health;
+        public int Warm => _warm;
+        public bool IsInWarmArea 
+        {
+            get => _isInWarmArea;
+            set
+            {
+                _isInWarmArea = value;
+                IsInWarmAreaStateChanged?.Invoke(_isInWarmArea);
+            }
+        }
 
         public Transform Point => _movement.Helper;
         public Item Grabbed => _grabbing.Grabbed;
         public bool IsGrabbing => _grabbing.IsGrabbing;
-        public bool IsAlive => Health > 0;
+        public bool IsAlive => _health > 0;
         public Transform Transform => transform;
+
+        public event Action<int> HealthChanged;
+        public event Action<int> WarmChanged;
+        public event Action<bool> IsInWarmAreaStateChanged;
 
         public void Init()
         {
@@ -58,8 +75,8 @@ namespace WGame
             _interaction.Init(this);
             _combat.Init(OnAttacking);
 
-            Health = _maxHealth;
-            Warm = _maxWarm;
+            _health = new Stat(_maxHealth, OnHealthChanged);
+            _warm = new Stat(_maxWarm, OnWarmChanged);
 
             StartCoroutine(StatsUpdateLoop());
         }
@@ -76,23 +93,16 @@ namespace WGame
 
         public void TakeDamage(int damage)
         {
-            Health -= damage;
-            CheckDie();
+            _health -= damage;
         }
 
-        public void EnterWarmArea() => _isInWarmArea = true;
+        public void EnterWarmArea() => IsInWarmArea = true;
 
-        public void ExitWarmArea() => _isInWarmArea = false;
+        public void ExitWarmArea() => IsInWarmArea = false;
 
         public void Recycle()
         {
             Game.RemovePlayer(this);
-        }
-
-        private void CheckDie()
-        {
-            if (IsAlive == false)
-                Die();
         }
 
         private void Die()
@@ -102,6 +112,19 @@ namespace WGame
             _combat.SetIsEnabledState(false);
             _interaction.SetIsEnabledState(false);
             _view.SetIsDead();
+        }
+
+        private void OnHealthChanged(int value)
+        {
+            if (IsAlive == false)
+                Die();
+
+            HealthChanged?.Invoke(value);
+        }
+
+        private void OnWarmChanged(int value)
+        {
+            WarmChanged?.Invoke(value);
         }
 
         private void OnIsLoadedChanged(bool isLoaded)
@@ -133,39 +156,36 @@ namespace WGame
 
             while (IsAlive)
             {
-                yield return waitForSeconds;
-
                 UpdateWarmStat();
-
                 UpdateHealthStat();
+                yield return waitForSeconds;
             }
         }
 
         private void UpdateWarmStat()
         {
-            if (_isInWarmArea)
+            if (IsInWarmArea)
             {
-                if (Warm < _maxWarm)
-                    Warm = Mathf.Min(Warm + _warmToAdd, _maxWarm);
+                if (_warm < _maxWarm)
+                    _warm += _warmToAdd;
             }
             else
             {
-                if (Warm > 0)
-                    Warm = Mathf.Max(Warm - _warmToRemove, 0);
+                if (_warm > 0)
+                    _warm -= _warmToRemove;
             }
         }
 
         private void UpdateHealthStat()
         {
-            if (Warm > 0)
+            if (_warm > 0)
             {
-                if (Health < _maxHealth)
-                    Health = Mathf.Min(Health + _healthToAdd, _maxHealth);
+                if (_health < _maxHealth)
+                    _health += _healthToAdd;
             }
             else
             {
-                Health = Mathf.Max(Health - _healthToRemove, 0);
-                CheckDie();
+                _health -= _healthToRemove;
             }
         }
     }

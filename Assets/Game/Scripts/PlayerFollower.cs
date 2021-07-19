@@ -2,13 +2,13 @@ using UnityEngine;
 
 namespace WGame
 {
-    public class PlayerFollower : MonoBehaviour
+    public class PlayerFollower : MonoBehaviour, IPlayerTargeting
     {
         private Player _target;
         private Vector3 _positionOffset;
         private Quaternion _rotationOffset;
 
-        public void Init(Player target)
+        public void SetTarget(Player target)
         {
             _target = target;
             _positionOffset = transform.position - _target.Point.position;

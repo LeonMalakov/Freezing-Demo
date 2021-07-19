@@ -5,12 +5,12 @@ namespace WGame
 {
     public abstract class GameScenario : MonoBehaviour
     {
+        [SerializeField] private Dependencies _dependencies;
         [SerializeField] private PlayerSpawnPoint _playerSpawnPoint;
         [SerializeField] private CampfireSpawnPoint _campfireSpawnPoint;
         [SerializeField] private ItemSpawnPoint[] _itemsSpawnPoints;
         [SerializeField] private TreeSpawnPoint[] _treesSpawnPoints;
         [SerializeField] private EnemySpawnPoint[] _enemiesSpawnPoints;
-        [SerializeField] private PlayerFollower _camera;
         [SerializeField] private int _averagePlanetRadius = 25;
 
         private HashSet<Enemy> _enemies = new HashSet<Enemy>();
@@ -38,8 +38,9 @@ namespace WGame
         protected void CreateMain()
         {
             Player = Game.CreatePlayer(_playerSpawnPoint.transform.position, _playerSpawnPoint.transform.rotation);
-            _camera.Init(Player);
             Game.CreateCampfire(_campfireSpawnPoint.transform.position, _campfireSpawnPoint.transform.rotation);
+
+            _dependencies.Set(Player);
         }
     }
 }
