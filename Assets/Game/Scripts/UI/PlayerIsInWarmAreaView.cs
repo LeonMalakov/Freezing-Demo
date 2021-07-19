@@ -60,7 +60,7 @@ namespace WGame
             _player.IsInWarmAreaStateChanged -= OnValueChanged;
         }
 
-        protected void OnValueChanged(bool value)
+        private void OnValueChanged(bool value)
         {
             _checkbox.SetValue(value);
         }

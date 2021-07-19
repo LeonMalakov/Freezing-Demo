@@ -6,13 +6,14 @@ namespace WGame
     [RequireComponent(typeof(ProgressBar))]
     public abstract class PlayerStatView : MonoBehaviour, IPlayerTargeting
     {
-        private Player _player;
         private ProgressBar _bar;
+
+        protected Player Player { get; private set; }
 
         public void SetTarget(Player player)
         {
             TryUnsubscribe();
-            _player = player;
+            Player = player;
 
             if (isActiveAndEnabled)
                 TrySubscribe();
@@ -35,31 +36,31 @@ namespace WGame
 
         private void TrySubscribe()
         {
-            if (_player != null)
+            if (Player != null)
             {
-                Subscribe(_player);
-                OnValueChanged(GetCurrentValue(_player));
+                Subscribe();
+                OnValueChanged(GetCurrentValue());
             }
         }
 
         private void TryUnsubscribe()
         {
-            if (_player != null)
-                Unsubscribe(_player);
+            if (Player != null)
+                Unsubscribe();
         }
 
 
         protected void OnValueChanged(int value)
         {
-            _bar.SetProgress(value / (float)GetMaxValue(_player));
+            _bar.SetProgress(value / (float)GetMaxValue());
         }
 
-        protected abstract void Subscribe(Player player);
+        protected abstract void Subscribe();
 
-        protected abstract void Unsubscribe(Player player);
+        protected abstract void Unsubscribe();
 
-        protected abstract int GetMaxValue(Player player);
+        protected abstract int GetMaxValue();
 
-        protected abstract int GetCurrentValue(Player player);
+        protected abstract int GetCurrentValue();
     }
 }

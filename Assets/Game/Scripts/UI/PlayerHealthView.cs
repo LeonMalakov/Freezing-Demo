@@ -2,18 +2,18 @@ namespace WGame
 {
     public class PlayerHealthView : PlayerStatView
     {
-        protected override int GetMaxValue(Player player) => player.MaxHealth;
+        protected override int GetMaxValue() => Player.MaxHealth;
 
-        protected override int GetCurrentValue(Player player) => player.Health;
+        protected override int GetCurrentValue() => Player.Health;
 
-        protected override void Subscribe(Player player)
+        protected override void Subscribe()
         {
-            player.HealthChanged += OnValueChanged;
+            Player.HealthChanged += OnValueChanged;
         }
 
-        protected override void Unsubscribe(Player player)
+        protected override void Unsubscribe()
         {
-            player.HealthChanged -= OnValueChanged;
+            Player.HealthChanged -= OnValueChanged;
         }
     }
 }

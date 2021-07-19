@@ -41,7 +41,7 @@ namespace WGame
         public int MaxWarm => _maxWarm;
         public int Health => _health;
         public int Warm => _warm;
-        public bool IsInWarmArea 
+        public bool IsInWarmArea
         {
             get => _isInWarmArea;
             set
@@ -60,6 +60,8 @@ namespace WGame
         public event Action<int> HealthChanged;
         public event Action<int> WarmChanged;
         public event Action<bool> IsInWarmAreaStateChanged;
+        public event Action<IAttackable> Attacking;
+        public event Action<IInteractivable> InteractionActiveChanged;
 
         public void Init()
         {
@@ -72,7 +74,7 @@ namespace WGame
             _movement.Init(_view.SetVelocity);
             _movement.SetSpeed(_normalMoveSpeed);
             _grabbing.Init(OnIsLoadedChanged);
-            _interaction.Init(this);
+            _interaction.Init(this, OnInteractionActiveChanged);
             _combat.Init(OnAttacking);
 
             _health = new Stat(_maxHealth, OnHealthChanged);
@@ -141,6 +143,7 @@ namespace WGame
             _movement.SetLookAtTarget(target.Transform.position);
             _movement.SetLookAtMode(CharacterMovement.LookAtMode.Target);
             _view.SetAttack();
+            Attacking?.Invoke(target);
         }
 
         private void OnAttackEnded()
@@ -148,6 +151,11 @@ namespace WGame
             _combat.AttackEnded();
             _movement.SetLookAtMode(CharacterMovement.LookAtMode.MoveDirection);
             _movement.SetIsMovementEnabledState(true);
+        }
+
+        private void OnInteractionActiveChanged(IInteractivable target)
+        {
+            InteractionActiveChanged?.Invoke(target);
         }
 
         private IEnumerator StatsUpdateLoop()

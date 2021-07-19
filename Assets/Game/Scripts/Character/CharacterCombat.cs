@@ -7,11 +7,11 @@ namespace WGame
 {
     public class CharacterCombat : MonoBehaviour
     {
-        private const int FindingClosestTargetRadius = 6;
         [SerializeField] private Transform _attackPoint;
         [SerializeField] private Vector3 _attackShape;
         [SerializeField] private LayerMask _layers;
         [SerializeField] [Range(0, 500)] private int _damage = 20;
+        [SerializeField] [Range(0, 10)] private float _findingClosestTargetRadius = 2.5f;
 
         private bool _isEnabled;
         private bool _isAttacking;
@@ -61,7 +61,7 @@ namespace WGame
 
         private IAttackable GetClosestTarget()
         {
-            var hits = Physics.OverlapSphere(transform.position, FindingClosestTargetRadius, _layers);
+            var hits = Physics.OverlapSphere(transform.position, _findingClosestTargetRadius, _layers);
             var targets = TakeAttackables(hits);
             return targets.FindClosest(transform.position);
         }
@@ -76,6 +76,9 @@ namespace WGame
 
         private void OnDrawGizmosSelected()
         {
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(transform.position, _findingClosestTargetRadius);
+
             if (_attackPoint == null)
                 return;
 

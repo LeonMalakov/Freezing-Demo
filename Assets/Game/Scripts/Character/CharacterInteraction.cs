@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -11,10 +12,12 @@ namespace WGame
         private bool _isEnabled;
         private Player _character;
         private IInteractivable _active;
+        private Action<IInteractivable> _activeChanged;
 
-        public void Init(Player character)
+        public void Init(Player character, Action<IInteractivable> activeChanged)
         {
             _character = character;
+            _activeChanged = activeChanged;
             SetIsEnabledState(true);
         }
 
@@ -79,6 +82,8 @@ namespace WGame
 
                 if (_active != null)
                     _active.BecomeActive();
+
+                _activeChanged?.Invoke(_active);
             }
         }
 

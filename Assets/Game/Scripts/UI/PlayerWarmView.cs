@@ -2,18 +2,18 @@
 {
     public class PlayerWarmView : PlayerStatView
     {
-        protected override int GetMaxValue(Player player) => player.MaxWarm;
+        protected override int GetMaxValue() => Player.MaxWarm;
 
-        protected override int GetCurrentValue(Player player) => player.Warm;
+        protected override int GetCurrentValue() => Player.Warm;
 
-        protected override void Subscribe(Player player)
+        protected override void Subscribe()
         {
-            player.WarmChanged += OnValueChanged;
+            Player.WarmChanged += OnValueChanged;
         }
 
-        protected override void Unsubscribe(Player player)
+        protected override void Unsubscribe()
         {
-            player.WarmChanged -= OnValueChanged;
+            Player.WarmChanged -= OnValueChanged;
         }
     }
 }
