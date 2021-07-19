@@ -628,6 +628,8 @@ MonoBehaviour:
   - {fileID: 1417416646}
   - {fileID: 101840169}
   _camera: {fileID: 771312044}
+  _averagePlanetRadius: 25
+  _targetEnemyCount: 4
 --- !u!1 &712307794
 GameObject:
   m_ObjectHideFlags: 0

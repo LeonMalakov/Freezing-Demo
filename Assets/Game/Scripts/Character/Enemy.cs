@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 namespace WGame
@@ -11,6 +12,7 @@ namespace WGame
         [SerializeField] [Range(1, 10)] private float _normalMoveSpeed = 3;
         [SerializeField] [Range(1, 10)] private float _runMoveSpeed = 5.5f;
         [SerializeField] [Range(0, 500)] private int _health = 80;
+        [SerializeField] [Range(0, 30)] private float _disappearTime = 10;
 
         private CharacterMovement _movement;
         private CharacterCombat _combat;
@@ -48,7 +50,7 @@ namespace WGame
 
         public void Recycle()
         {
-            OriginFactory.Reclaim(this);
+            Game.RemoveEnemy(this);
         }
 
         private void CheckDie()
@@ -62,6 +64,8 @@ namespace WGame
             _movement.SetIsEnabledState(false);
             _combat.SetIsEnabledState(false);
             _view.SetIsDead();
+
+            StartCoroutine(DisappearLoop());
         }
 
         private void OnAttacking()
@@ -74,6 +78,12 @@ namespace WGame
         {
             _combat.AttackEnded();
             _movement.SetIsEnabledState(true);
+        }
+
+        private IEnumerator DisappearLoop()
+        {
+            yield return new WaitForSeconds(_disappearTime);
+            Recycle();
         }
     }
 }

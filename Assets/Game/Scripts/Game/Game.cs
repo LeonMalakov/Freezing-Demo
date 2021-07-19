@@ -58,6 +58,12 @@ namespace WGame
             return instance;
         }
 
+        public static void RemoveEnemy(Enemy enemy)
+        {
+            _instance._scenario.EnemyRemoved(enemy);
+            _instance._enemiesFactory.Reclaim(enemy);
+        }
+
         private static void PlaceInstance(Vector3 position, Quaternion rotation, GameBehaviour instance)
         {
             instance.transform.position = position;

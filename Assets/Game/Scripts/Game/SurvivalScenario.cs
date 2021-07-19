@@ -1,15 +1,11 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using UnityEngine;
 
 namespace WGame
 {
     public class SurvivalScenario : GameScenario
     {
-        [SerializeField] private PlayerSpawnPoint _playerSpawnPoint;
-        [SerializeField] private CampfireSpawnPoint _campfireSpawnPoint;
-        [SerializeField] private ItemSpawnPoint[] _itemsSpawnPoints;
-        [SerializeField] private TreeSpawnPoint[] _treesSpawnPoints;
-        [SerializeField] private EnemySpawnPoint[] _enemiesSpawnPoints;
-        [SerializeField] private PlayerFollower _camera;
+        [SerializeField] [Range(0, 100)] private int _targetEnemyCount = 6;
 
         public override void Play()
         {
@@ -18,31 +14,64 @@ namespace WGame
 
         private void CreateLevel()
         {
-            var player = Game.CreatePlayer(_playerSpawnPoint.transform.position, _playerSpawnPoint.transform.rotation);
-            Game.CreateCampfire(_campfireSpawnPoint.transform.position, _campfireSpawnPoint.transform.rotation);
+            CreateMain();
             CreateItems();
             CreateTrees();
             CreateEnemies();
+        }
 
-            _camera.Init(player);
+        private void FixedUpdate()
+        {
+            if (Enemies.Count < _targetEnemyCount)
+            {
+                TrySpawnEnemyAtRandomPoint();
+            }
+        }
+
+        private bool TrySpawnEnemyAtRandomPoint()
+        {
+            var spawnPoint = RandomEnemySpawnPointAtPlanetRadiusDistance();
+            if (spawnPoint != null)
+            {
+                SpawnEnemy(spawnPoint);
+                return true;
+            }
+
+            return false;
         }
 
         private void CreateTrees()
         {
-            foreach (var tree in _treesSpawnPoints)
+            foreach (var tree in TreesSpawnPoints)
                 Game.CreateTree(tree.transform.position, tree.transform.rotation);
         }
 
         private void CreateItems()
         {
-            foreach (var item in _itemsSpawnPoints)
+            foreach (var item in ItemsSpawnPoints)
                 Game.CreateItem(item.transform.position, item.transform.rotation);
         }
 
         private void CreateEnemies()
         {
-            foreach (var item in _enemiesSpawnPoints)
-                Game.CreateEnemy(item.transform.position, item.transform.rotation);
+            var spawnPoints = EnemiesSpawnPoints.CopyAndShuffle();
+            int counter = 0;
+
+            while (Enemies.Count < _targetEnemyCount)
+            {
+                SpawnEnemy(spawnPoints[counter++]);
+
+                if (counter >= spawnPoints.Count)
+                    counter = 0;
+            }
+        }
+
+        private EnemySpawnPoint RandomEnemySpawnPointAtPlanetRadiusDistance()
+        {
+            var sp = EnemiesSpawnPoints
+                .Where(x => Vector3.Distance(x.transform.position, Player.transform.position) > AveragePlanetRadius);
+
+            return sp.ElementAt(Random.Range(0, sp.Count()));
         }
     }
 }
