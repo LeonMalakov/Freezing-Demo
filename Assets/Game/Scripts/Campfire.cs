@@ -16,6 +16,8 @@ namespace WGame
         public Vector3 Position => transform.position;
         public bool IsAlive => _lifeTime > 0;
 
+        public ICampfireOwner OriginFactory { get; set; }
+
         public event Action Died;
 
         private void Start()
@@ -44,6 +46,27 @@ namespace WGame
                 CheckPlayerInsideWarmArea();
         }
 
+        public bool Interact(Player character) => false;
+
+        public bool InteractWithItem(Player character, Item item)
+        {
+            AddItem(item);
+            return true;
+        }
+
+        public void AddItem(Item item)
+        {
+            _lifeTime += item.LifeTimeToAdd;
+            item.Recycle();
+
+            Debug.Log($"LifeTime = {_lifeTime}");
+        }
+
+        public void Recycle()
+        {
+            OriginFactory.Reclaim(this);
+        }
+
         private void CheckPlayerInsideWarmArea()
         {
             Player newPlayer = GetPlayer();
@@ -64,22 +87,6 @@ namespace WGame
             var hits = Physics.OverlapSphere(transform.position, _warmRadius, _playerLayer);
             var newPlayer = hits.Select(x => x.GetComponent<Player>()).FirstOrDefault(x => x != null);
             return newPlayer;
-        }
-
-        public bool Interact(Player character) => false;
-
-        public bool InteractWithItem(Player character, Item item)
-        {
-            AddItem(item);
-            return true;
-        }
-
-        public void AddItem(Item item)
-        {
-            _lifeTime += item.LifeTimeToAdd;
-            item.Recycle();
-
-            Debug.Log($"LifeTime = {_lifeTime}");
         }
 
         private void DecreaseLifeTime()

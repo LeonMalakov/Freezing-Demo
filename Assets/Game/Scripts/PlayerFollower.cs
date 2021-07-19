@@ -2,21 +2,23 @@ using UnityEngine;
 
 namespace WGame
 {
-    public class CharacterFollower : MonoBehaviour
+    public class PlayerFollower : MonoBehaviour
     {
-        [SerializeField] private Player _target;
-
+        private Player _target;
         private Vector3 _positionOffset;
         private Quaternion _rotationOffset;
 
-        private void Start()
+        public void Init(Player target)
         {
+            _target = target;
             _positionOffset = transform.position - _target.Point.position;
             _rotationOffset = Quaternion.Inverse(_target.Point.rotation) * transform.rotation;
         }
 
         private void Update()
         {
+            if (_target == null) return;
+
             transform.rotation = _target.Point.rotation * _rotationOffset;
             transform.position = _target.Point.position + _target.Point.TransformDirection(_positionOffset);
         }
