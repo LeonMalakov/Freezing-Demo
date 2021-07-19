@@ -99,7 +99,7 @@ namespace WGame
             return target;
         }
 
-        private void OnDrawGizmos()
+        private void OnDrawGizmosSelected()
         {
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(transform.position, _targetsDetectionRange);
