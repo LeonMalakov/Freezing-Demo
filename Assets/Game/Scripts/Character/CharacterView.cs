@@ -11,6 +11,7 @@ namespace WGame
         private Animator _animator;
         private Action _hit;
         private Action _attackEnded;
+        private bool _isDead;
 
         public void Init(Action hit, Action attackEnded)
         {
@@ -36,17 +37,20 @@ namespace WGame
 
         public void SetIsDead()
         {
+            _isDead = true;
             _animator.SetBool(Constants.CharacterAnimatorController.Parameters.IsDead, true);
         }
 
         private void AnimEvent_Hit()
         {
-            _hit?.Invoke();
+            if (_isDead == false)
+                _hit?.Invoke();
         }
 
         private void AnimEvent_AttackEnded()
         {
-            _attackEnded?.Invoke();
+            if(_isDead == false)
+                _attackEnded?.Invoke();
         }
     }
 }
