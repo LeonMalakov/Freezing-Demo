@@ -1,6 +1,6 @@
 ﻿namespace WGame
 {
-    public interface IAttackable
+    public interface IAttackable : IGameObject
     {
         bool IsAlive { get; }
 

@@ -8,8 +8,7 @@ namespace WGame
         [SerializeField] [Range(0, 120)] private float _lifeTimeToAdd = 20;
 
         public float LifeTimeToAdd => _lifeTimeToAdd;
-
-        public Vector3 Position => transform.position;
+        public Transform Transform => transform;
 
         public void Init()
         {

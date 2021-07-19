@@ -7,6 +7,7 @@ namespace WGame
 {
     public class CharacterCombat : MonoBehaviour
     {
+        private const int FindingClosestTargetRadius = 6;
         [SerializeField] private Transform _attackPoint;
         [SerializeField] private Vector3 _attackShape;
         [SerializeField] private LayerMask _layers;
@@ -14,9 +15,9 @@ namespace WGame
 
         private bool _isEnabled;
         private bool _isAttacking;
-        private Action _attacking;
+        private Action<IAttackable> _attacking;
 
-        public void Init(Action attacking)
+        public void Init(Action<IAttackable> attacking)
         {
             _attacking = attacking;
             SetIsEnabledState(true);
@@ -32,7 +33,8 @@ namespace WGame
             if (_isEnabled == false || _isAttacking) return;
 
             _isAttacking = true;
-            _attacking?.Invoke();
+            var closestTarget = GetClosestTarget();
+            _attacking?.Invoke(closestTarget);
         }
 
         public void ApplyDamageToTargets()
@@ -53,11 +55,23 @@ namespace WGame
         private IEnumerable<IAttackable> GetTargets()
         {
             var hits = Physics.OverlapBox(_attackPoint.position, _attackShape * 0.5f, _attackPoint.rotation, _layers);
-            var targets = hits
+            var targets = TakeAttackables(hits);
+            return targets;
+        }
+
+        private IAttackable GetClosestTarget()
+        {
+            var hits = Physics.OverlapSphere(transform.position, FindingClosestTargetRadius, _layers);
+            var targets = TakeAttackables(hits);
+            return targets.FindClosest(transform.position);
+        }
+
+        private IEnumerable<IAttackable> TakeAttackables(Collider[] hits)
+        {
+            return hits
                 .Where(x => x.gameObject != gameObject)
                 .Select(x => x.GetComponent<IAttackable>())
                 .Where(x => x != null);
-            return targets;
         }
 
         private void OnDrawGizmosSelected()

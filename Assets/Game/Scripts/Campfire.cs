@@ -13,8 +13,8 @@ namespace WGame
         private float _lifeTime;
         private Player _player;
 
-        public Vector3 Position => transform.position;
         public bool IsAlive => _lifeTime > 0;
+        public Transform Transform => transform;
 
         public event Action Died;
 

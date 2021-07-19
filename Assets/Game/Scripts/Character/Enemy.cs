@@ -21,6 +21,7 @@ namespace WGame
 
         public Transform Point => _movement.Helper;
         public bool IsAlive => _health > 0;
+        public Transform Transform => transform;
 
         internal void Init()
         {
@@ -67,16 +68,19 @@ namespace WGame
             StartCoroutine(DisappearLoop());
         }
 
-        private void OnAttacking()
+        private void OnAttacking(IAttackable target)
         {
-            _movement.SetIsEnabledState(false);
+            _movement.SetIsMovementEnabledState(false);
+            _movement.SetLookAtTarget(target.Transform.position);
+            _movement.SetLookAtMode(CharacterMovement.LookAtMode.Target);
             _view.SetAttack();
         }
 
         private void OnAttackEnded()
         {
             _combat.AttackEnded();
-            _movement.SetIsEnabledState(true);
+            _movement.SetLookAtMode(CharacterMovement.LookAtMode.MoveDirection);
+            _movement.SetIsMovementEnabledState(true);
         }
 
         private IEnumerator DisappearLoop()

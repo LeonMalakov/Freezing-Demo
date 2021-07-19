@@ -1,11 +1,7 @@
-﻿using UnityEngine;
-
-namespace WGame
+﻿namespace WGame
 {
-    public interface IInteractivable
+    public interface IInteractivable : IGameObject
     {
-        Vector3 Position { get; }
-
         bool Interact(Player character);
 
         bool InteractWithItem(Player character, Item item);

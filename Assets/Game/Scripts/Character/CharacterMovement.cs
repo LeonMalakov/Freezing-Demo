@@ -6,6 +6,12 @@ namespace WGame
     [RequireComponent(typeof(Rigidbody))]
     public class CharacterMovement : MonoBehaviour
     {
+        public enum LookAtMode : byte
+        {
+            MoveDirection,
+            Target
+        }
+
         [SerializeField] [Range(1, 10)] private int _turnSpeed = 5;
 
         private Rigidbody _rigidbody;
@@ -13,6 +19,9 @@ namespace WGame
         private Vector2 _input;
         private float _speed;
         private bool _isEnabled;
+        private bool _isMovementEnabled;
+        private LookAtMode _lookAtMode;
+        private Vector3 _lookAtTarget;
         private Action<float> _velocityChanged;
 
         public Transform Helper { get; private set; }
@@ -27,22 +36,20 @@ namespace WGame
             Helper.parent = transform.parent;
 
             SetIsEnabledState(true);
+            SetIsMovementEnabledState(true);
         }
 
-        public void SetIsEnabledState(bool isEnabled)
-        {
-            _isEnabled = isEnabled;
-        }
+        public void SetIsEnabledState(bool isEnabled) => _isEnabled = isEnabled;
 
-        public void SetSpeed(float speed)
-        {
-            _speed = speed;
-        }
+        public void SetIsMovementEnabledState(bool isEnabled) => _isMovementEnabled = isEnabled;
 
-        public void SetMove(Vector2 input)
-        {
-            _input = input;
-        }
+        public void SetSpeed(float speed) => _speed = speed;
+
+        public void SetMove(Vector2 input) => _input = input;
+
+        public void SetLookAtTarget(Vector3 lookAt) => _lookAtTarget = lookAt;
+
+        public void SetLookAtMode(LookAtMode mode) => _lookAtMode = mode;
 
         private void FixedUpdate()
         {
@@ -64,9 +71,14 @@ namespace WGame
                 Vector3 moveDirection = CalculateMoveDirection(hit, helperForward);
 
                 RotateByGroundNormal(hit);
-                RotateToMoveDirection(hit, moveDirection);
 
-                Move(hit, moveDirection);
+                if(_lookAtMode == LookAtMode.MoveDirection)
+                    RotateToDirection(hit, moveDirection);
+                else
+                    RotateToDirection(hit, _lookAtTarget - transform.position);
+
+                if(_isMovementEnabled)
+                    Move(hit, moveDirection);
             }
         }
 
@@ -105,7 +117,7 @@ namespace WGame
             _transform.rotation = Quaternion.LookRotation(forward, hit.normal);
         }
 
-        private void RotateToMoveDirection(RaycastHit hit, Vector3 moveDirection)
+        private void RotateToDirection(RaycastHit hit, Vector3 moveDirection)
         {
             if (moveDirection != Vector3.zero)
             {

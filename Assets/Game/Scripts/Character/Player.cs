@@ -42,6 +42,7 @@ namespace WGame
         public Item Grabbed => _grabbing.Grabbed;
         public bool IsGrabbing => _grabbing.IsGrabbing;
         public bool IsAlive => Health > 0;
+        public Transform Transform => transform;
 
         public void Init()
         {
@@ -111,16 +112,19 @@ namespace WGame
             _weaponModel.SetActive(!isLoaded);
         }
 
-        private void OnAttacking()
+        private void OnAttacking(IAttackable target)
         {
-            _movement.SetIsEnabledState(false);
+            _movement.SetIsMovementEnabledState(false);
+            _movement.SetLookAtTarget(target.Transform.position);
+            _movement.SetLookAtMode(CharacterMovement.LookAtMode.Target);
             _view.SetAttack();
         }
 
         private void OnAttackEnded()
         {
             _combat.AttackEnded();
-            _movement.SetIsEnabledState(true);
+            _movement.SetLookAtMode(CharacterMovement.LookAtMode.MoveDirection);
+            _movement.SetIsMovementEnabledState(true);
         }
 
         private IEnumerator StatsUpdateLoop()

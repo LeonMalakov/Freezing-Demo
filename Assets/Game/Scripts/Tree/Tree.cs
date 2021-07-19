@@ -16,6 +16,7 @@ namespace WGame
         private int _health;
 
         public bool IsAlive => _health > 0;
+        public Transform Transform => transform;
 
         public void Init()
         {

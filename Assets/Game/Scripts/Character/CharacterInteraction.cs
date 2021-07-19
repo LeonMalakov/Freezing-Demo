@@ -85,24 +85,7 @@ namespace WGame
         private IInteractivable GetClosestInteractivable()
         {
             IEnumerable<IInteractivable> hits = GetInteractivables();
-            IInteractivable closest = FindClosest(hits);
-
-            return closest;
-        }
-
-        private IInteractivable FindClosest(IEnumerable<IInteractivable> hits)
-        {
-            float minDistance = float.MaxValue;
-            IInteractivable closest = null;
-            foreach (var x in hits)
-            {
-                float dist = Vector3.Distance(x.Position, transform.position);
-                if (dist < minDistance)
-                {
-                    minDistance = dist;
-                    closest = x;
-                }
-            }
+            IInteractivable closest =hits.FindClosest(transform.position);
 
             return closest;
         }

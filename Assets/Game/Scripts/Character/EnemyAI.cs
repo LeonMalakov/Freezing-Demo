@@ -6,7 +6,6 @@ namespace WGame
     [RequireComponent(typeof(Enemy))]
     public class EnemyAI : MonoBehaviour
     {
-        private const int AttackAngle = 25;
         private const int UpdateTargetFrames = 4;
         [SerializeField] [Range(0, 20)] private float _targetsDetectionRange = 10;
         [SerializeField] [Range(0, 5)] private float _attackRange = 1.5f;
@@ -69,16 +68,9 @@ namespace WGame
         private void FollowTarget(Player target)
         {
             if (IsTargetInAttackRange(target))
-            {
-                if (Vector3.Angle(transform.forward, target.transform.position - transform.position) < AttackAngle)
-                    _enemy.Attack();
-                else
-                    MoveToTarget(target);
-            }
+                _enemy.Attack();
             else
-            {
                 MoveToTarget(target);
-            }
         }
 
         private bool IsTargetInAttackRange(Player target)
