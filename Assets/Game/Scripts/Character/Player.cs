@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 namespace WGame
@@ -9,22 +10,37 @@ namespace WGame
     [RequireComponent(typeof(CharacterCombat))]
     public class Player : GameBehaviour, IAttackable
     {
+        private const int StatsUpdateTime = 1;
+
+        [Header("References")]
         [SerializeField] private CharacterView _view;
         [SerializeField] private GameObject _weaponModel;
 
+        [Header("Stats")]
         [SerializeField] [Range(1, 10)] private float _normalMoveSpeed = 1;
         [SerializeField] [Range(1, 10)] private float _loadedMoveSpeed = 1;
-        [SerializeField] [Range(0, 500)] private int _health = 100;
+        [SerializeField] [Range(0, 100)] private int _maxHealth = 100;
+        [SerializeField] [Range(0, 100)] private int _maxWarm = 100;
+
+        [Header("Stats updates")]
+        [SerializeField] [Range(0, 50)] private int _healthToAdd = 5;
+        [SerializeField] [Range(0, 50)] private int _healthToRemove = 2;
+        [SerializeField] [Range(0, 50)] private int _warmToAdd = 10;
+        [SerializeField] [Range(0, 50)] private int _warmToRemove = 3;
 
         private CharacterMovement _movement;
         private CharacterGrabbing _grabbing;
         private CharacterInteraction _interaction;
         private CharacterCombat _combat;
+        private bool _isInWarmArea;
+
+        public int Health { get; private set; }
+        public int Warm { get; private set; }
 
         public Transform Point => _movement.Helper;
         public Item Grabbed => _grabbing.Grabbed;
         public bool IsGrabbing => _grabbing.IsGrabbing;
-        public bool IsAlive => _health > 0;
+        public bool IsAlive => Health > 0;
 
         protected override void Awake()
         {
@@ -41,6 +57,11 @@ namespace WGame
             _grabbing.Init(OnIsLoadedChanged);
             _interaction.Init(this);
             _combat.Init(OnAttacking);
+
+            Health = _maxHealth;
+            Warm = _maxWarm;
+
+            StartCoroutine(StatsUpdateLoop());
         }
 
         public void SetMove(Vector2 input) => _movement.SetMove(input);
@@ -55,9 +76,13 @@ namespace WGame
 
         public void TakeDamage(int damage)
         {
-            _health -= damage;
+            Health -= damage;
             CheckDie();
         }
+
+        public void EnterWarmArea() => _isInWarmArea = true;
+
+        public void ExitWarmArea() => _isInWarmArea = false;
 
         private void CheckDie()
         {
@@ -94,5 +119,46 @@ namespace WGame
             _movement.SetIsEnabledState(true);
         }
 
+        private IEnumerator StatsUpdateLoop()
+        {
+            var waitForSeconds = new WaitForSeconds(StatsUpdateTime);
+
+            while (IsAlive)
+            {
+                yield return waitForSeconds;
+
+                UpdateWarmStat();
+
+                UpdateHealthStat();
+            }
+        }
+
+        private void UpdateWarmStat()
+        {
+            if (_isInWarmArea)
+            {
+                if (Warm < _maxWarm)
+                    Warm = Mathf.Min(Warm + _warmToAdd, _maxWarm);
+            }
+            else
+            {
+                if (Warm > 0)
+                    Warm = Mathf.Max(Warm - _warmToRemove, 0);
+            }
+        }
+
+        private void UpdateHealthStat()
+        {
+            if (Warm > 0)
+            {
+                if (Health < _maxHealth)
+                    Health = Mathf.Min(Health + _healthToAdd, _maxHealth);
+            }
+            else
+            {
+                Health = Mathf.Max(Health - _healthToRemove, 0);
+                CheckDie();
+            }
+        }
     }
 }

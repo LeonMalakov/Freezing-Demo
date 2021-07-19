@@ -241,6 +241,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _startLifeTime: 60
+  _warmRadius: 8
+  _playerLayer:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!4 &106228946
 Transform:
   m_ObjectHideFlags: 0
