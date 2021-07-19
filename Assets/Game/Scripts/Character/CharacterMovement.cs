@@ -24,6 +24,7 @@ namespace WGame
             _rigidbody = GetComponent<Rigidbody>();
             _transform = transform;
             Helper = new GameObject("Helper").transform;
+            Helper.parent = transform.parent;
 
             SetIsEnabledState(true);
         }

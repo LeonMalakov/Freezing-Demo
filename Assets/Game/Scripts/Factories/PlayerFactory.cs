@@ -10,6 +10,7 @@ namespace WGame
         public Player Get()
         {
             var instance = CreateGameObjectInstance(_prefab);
+            instance.Init();
             return instance;
         }
 

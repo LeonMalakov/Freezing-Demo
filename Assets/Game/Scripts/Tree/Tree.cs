@@ -9,6 +9,7 @@ namespace WGame
         private const float DroppedItemsNoise = 0.8f;
         [SerializeField] private TreeView _view;
         [SerializeField] [Range(0, 1000)] private int _maxHealth = 100;
+
         [SerializeField] [Range(1, 10)] private int _dropItemsCount = 3;
         [SerializeField] [Range(0, 500)] private float _recoverTime = 180;
 
@@ -16,7 +17,7 @@ namespace WGame
 
         public bool IsAlive => _health > 0;
 
-        public void Start()
+        public void Init()
         {
             _health = _maxHealth;
         }

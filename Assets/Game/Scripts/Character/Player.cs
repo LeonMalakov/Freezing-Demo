@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -42,10 +43,8 @@ namespace WGame
         public bool IsGrabbing => _grabbing.IsGrabbing;
         public bool IsAlive => Health > 0;
 
-        protected override void Awake()
+        public void Init()
         {
-            base.Awake();
-
             _movement = GetComponent<CharacterMovement>();
             _grabbing = GetComponent<CharacterGrabbing>();
             _interaction = GetComponent<CharacterInteraction>();

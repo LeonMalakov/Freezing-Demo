@@ -10,6 +10,7 @@ namespace WGame
         public Tree Get()
         {
             var instance = CreateGameObjectInstance(_tree);
+            instance.Init();
             return instance;
         }
 

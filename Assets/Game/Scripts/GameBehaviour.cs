@@ -5,11 +5,16 @@ namespace WGame
     [RequireComponent(typeof(EarthPlacer))]
     public class GameBehaviour : MonoBehaviour
     {
-        public EarthPlacer EarthPlacer { get; private set; }
-
-        protected virtual void Awake()
+        private EarthPlacer _earthPlacer;
+        public EarthPlacer EarthPlacer
         {
-            EarthPlacer = GetComponent<EarthPlacer>();
+            get
+            {
+                if (_earthPlacer == null)
+                    _earthPlacer = GetComponent<EarthPlacer>();
+
+                return _earthPlacer;
+            }
         }
     }
 }

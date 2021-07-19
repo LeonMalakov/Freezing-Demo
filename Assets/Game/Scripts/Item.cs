@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace WGame
 {
@@ -9,6 +10,10 @@ namespace WGame
         public float LifeTimeToAdd => _lifeTimeToAdd;
 
         public Vector3 Position => transform.position;
+
+        public void Init()
+        {
+        }
 
         public bool Interact(Player character)
         {

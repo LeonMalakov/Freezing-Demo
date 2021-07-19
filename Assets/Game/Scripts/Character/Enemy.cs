@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -10,6 +11,7 @@ namespace WGame
     {
         [SerializeField] private CharacterView _view;
         [SerializeField] [Range(1, 10)] private float _normalMoveSpeed = 3;
+
         [SerializeField] [Range(1, 10)] private float _runMoveSpeed = 5.5f;
         [SerializeField] [Range(0, 500)] private int _health = 80;
         [SerializeField] [Range(0, 30)] private float _disappearTime = 10;
@@ -20,10 +22,8 @@ namespace WGame
         public Transform Point => _movement.Helper;
         public bool IsAlive => _health > 0;
 
-        protected override void Awake()
+        internal void Init()
         {
-            base.Awake();
-
             _movement = GetComponent<CharacterMovement>();
             _combat = GetComponent<CharacterCombat>();
 

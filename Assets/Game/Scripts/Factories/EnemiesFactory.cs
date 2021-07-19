@@ -10,6 +10,7 @@ namespace WGame
         public Enemy Get()
         {
             var instance = CreateGameObjectInstance(_prefab);
+            instance.Init();
             return instance;
         }
 

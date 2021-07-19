@@ -18,11 +18,11 @@ namespace WGame
 
         public event Action Died;
 
-        private void Start()
+        public void Init()
         {
             _lifeTime = _startLifeTime;
 
-            Died += () => 
+            Died += () =>
             {
                 if (_player != null)
                     _player.ExitWarmArea();
