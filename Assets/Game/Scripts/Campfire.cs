@@ -50,16 +50,16 @@ namespace WGame
 
         public bool InteractWithItem(Player character, Item item)
         {
+            if (IsAlive == false) return false;
+
             AddItem(item);
             return true;
         }
 
-        public void AddItem(Item item)
+        private void AddItem(Item item)
         {
             _lifeTime += item.LifeTimeToAdd;
             item.Recycle();
-
-            Debug.Log($"LifeTime = {_lifeTime}");
         }
 
         public void Recycle()
