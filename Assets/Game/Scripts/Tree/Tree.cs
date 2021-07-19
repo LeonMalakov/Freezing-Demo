@@ -15,17 +15,18 @@ namespace WGame
 
         private int _health;
 
-        public bool IsAlive => _health > 0;
-        public Transform Transform => transform;
+        Transform IGameObject.Transform => transform;
+        bool IAttackable.IsAlive => _health > 0;
+        bool IAttackable.IsPriority => false;
 
         public void Init()
         {
             _health = _maxHealth;
         }
 
-        public void TakeDamage(int damage)
+        void IAttackable.TakeDamage(int damage)
         {
-            if (IsAlive)
+            if (((IAttackable)this).IsAlive)
             {
                 _health -= damage;
                 CheckDie();
@@ -39,7 +40,7 @@ namespace WGame
 
         private void CheckDie()
         {
-            if (IsAlive == false)
+            if (((IAttackable)this).IsAlive == false)
                 Die();
         }
 

@@ -15,10 +15,12 @@ namespace WGame
 
         private bool _isEnabled;
         private bool _isAttacking;
+        Func<IAttackable, bool> _targetsFilter;
         private Action<IAttackable> _attacking;
 
-        public void Init(Action<IAttackable> attacking)
+        public void Init(Action<IAttackable> attacking, Func<IAttackable, bool> targetsFilter)
         {
+            _targetsFilter = targetsFilter;
             _attacking = attacking;
             SetIsEnabledState(true);
         }
@@ -55,23 +57,24 @@ namespace WGame
         private IEnumerable<IAttackable> GetTargets()
         {
             var hits = Physics.OverlapBox(_attackPoint.position, _attackShape * 0.5f, _attackPoint.rotation, _layers);
-            var targets = TakeAttackables(hits);
-            return targets;
+            return FilterTargets(hits.Take<IAttackable>());
         }
 
         private IAttackable GetClosestTarget()
         {
             var hits = Physics.OverlapSphere(transform.position, _findingClosestTargetRadius, _layers);
-            var targets = TakeAttackables(hits);
-            return targets.FindClosest(transform.position);
+
+            return FilterTargets(hits.Take<IAttackable>())
+                .TakeAlive()
+                .TakePrioritiesIfExist()
+                .FindClosest(transform.position);
         }
 
-        private IEnumerable<IAttackable> TakeAttackables(Collider[] hits)
+        private IEnumerable<IAttackable> FilterTargets(IEnumerable<IAttackable> targets)
         {
-            return hits
-                .Where(x => x.gameObject != gameObject)
-                .Select(x => x.GetComponent<IAttackable>())
-                .Where(x => x != null);
+            return targets
+                .Where(x => x.Transform != transform)
+                .Where(_targetsFilter);
         }
 
         private void OnDrawGizmosSelected()

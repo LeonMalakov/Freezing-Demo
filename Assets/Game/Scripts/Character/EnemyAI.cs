@@ -24,7 +24,7 @@ namespace WGame
 
         private void FixedUpdate()
         {
-            if (_enemy.IsAlive == false) return;
+            if (((IAttackable)_enemy).IsAlive == false) return;
 
             _fixedUpdates++;
 
@@ -87,7 +87,7 @@ namespace WGame
         private Player GetTarget()
         {
             var hits = Physics.OverlapSphere(transform.position, _targetsDetectionRange, _targetsMask);
-            var target = hits.Select(x => x.GetComponent<Player>()).Where(x => x != null && x.IsAlive).FirstOrDefault();
+            var target = hits.Select(x => x.GetComponent<Player>()).Where(x => x != null && ((IAttackable)x).IsAlive).FirstOrDefault();
             return target;
         }
 

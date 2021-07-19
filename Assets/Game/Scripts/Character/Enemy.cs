@@ -20,8 +20,10 @@ namespace WGame
         private CharacterCombat _combat;
 
         public Transform Point => _movement.Helper;
-        public bool IsAlive => _health > 0;
-        public Transform Transform => transform;
+        Transform IGameObject.Transform => transform;
+        bool IAttackable.IsAlive => _health > 0;
+        bool IAttackable.IsPriority => true;
+
 
         internal void Init()
         {
@@ -31,7 +33,7 @@ namespace WGame
             _view.Init(_combat.ApplyDamageToTargets, OnAttackEnded);
             _movement.Init(_view.SetVelocity);
             _movement.SetSpeed(_normalMoveSpeed);
-            _combat.Init(OnAttacking);
+            _combat.Init(OnAttacking, targetsFilter: x => x is Player);
         }
 
         public void SetMove(Vector2 input) => _movement.SetMove(input);
@@ -42,7 +44,7 @@ namespace WGame
 
         public void Attack() => _combat.Attack();
 
-        public void TakeDamage(int damage)
+        void IAttackable.TakeDamage(int damage)
         {
             _health -= damage;
             CheckDie();
@@ -55,7 +57,7 @@ namespace WGame
 
         private void CheckDie()
         {
-            if (IsAlive == false)
+            if (((IAttackable)this).IsAlive == false)
                 Die();
         }
 

@@ -54,8 +54,10 @@ namespace WGame
         public Transform Point => _movement.Helper;
         public Item Grabbed => _grabbing.Grabbed;
         public bool IsGrabbing => _grabbing.IsGrabbing;
-        public bool IsAlive => _health > 0;
-        public Transform Transform => transform;
+        Transform IGameObject.Transform => transform;
+        bool IAttackable.IsAlive => _health > 0;
+        bool IAttackable.IsPriority => true;
+
 
         public event Action<int> HealthChanged;
         public event Action<int> WarmChanged;
@@ -75,7 +77,7 @@ namespace WGame
             _movement.SetSpeed(_normalMoveSpeed);
             _grabbing.Init(OnIsLoadedChanged);
             _interaction.Init(this, OnInteractionActiveChanged);
-            _combat.Init(OnAttacking);
+            _combat.Init(OnAttacking, targetsFilter: x => true);
 
             _health = new Stat(_maxHealth, OnHealthChanged);
             _warm = new Stat(_maxWarm, OnWarmChanged);
@@ -93,7 +95,7 @@ namespace WGame
 
         public void Attack() => _combat.Attack();
 
-        public void TakeDamage(int damage)
+        void IAttackable.TakeDamage(int damage)
         {
             _health -= damage;
         }
@@ -118,7 +120,7 @@ namespace WGame
 
         private void OnHealthChanged(int value)
         {
-            if (IsAlive == false)
+            if (((IAttackable)this).IsAlive == false)
                 Die();
 
             HealthChanged?.Invoke(value);
@@ -140,8 +142,11 @@ namespace WGame
         private void OnAttacking(IAttackable target)
         {
             _movement.SetIsMovementEnabledState(false);
-            _movement.SetLookAtTarget(target.Transform.position);
-            _movement.SetLookAtMode(CharacterMovement.LookAtMode.Target);
+            if (target != null)
+            {
+                _movement.SetLookAtTarget(target.Transform.position);
+                _movement.SetLookAtMode(CharacterMovement.LookAtMode.Target);
+            }
             _view.SetAttack();
             Attacking?.Invoke(target);
         }
@@ -162,7 +167,7 @@ namespace WGame
         {
             var waitForSeconds = new WaitForSeconds(StatsUpdateTime);
 
-            while (IsAlive)
+            while (((IAttackable)this).IsAlive)
             {
                 UpdateWarmStat();
                 UpdateHealthStat();

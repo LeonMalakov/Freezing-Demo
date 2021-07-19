@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace WGame
@@ -20,6 +21,13 @@ namespace WGame
             }
 
             return closest;
+        }
+
+        public static IEnumerable<T> Take<T>(this Collider[] hits)
+        {
+            return hits
+                .Select(x => x.GetComponent<T>())
+                .Where(x => x != null);
         }
     }
 }

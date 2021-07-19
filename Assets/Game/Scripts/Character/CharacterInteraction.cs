@@ -90,7 +90,7 @@ namespace WGame
         private IInteractivable GetClosestInteractivable()
         {
             IEnumerable<IInteractivable> hits = GetInteractivables();
-            IInteractivable closest =hits.FindClosest(transform.position);
+            IInteractivable closest = hits.FindClosest(transform.position);
 
             return closest;
         }
@@ -98,9 +98,8 @@ namespace WGame
         private IEnumerable<IInteractivable> GetInteractivables()
         {
             var hits = Physics.OverlapSphere(transform.position, _range)
-                           .Select(x => x.GetComponent<IInteractivable>())
-                           .Where(x => x != null);
-
+                .Take<IInteractivable>();
+            
             if (_character.IsGrabbing)
                 hits = hits.Except(new IInteractivable[] { _character.Grabbed });
 
