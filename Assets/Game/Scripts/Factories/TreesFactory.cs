@@ -3,14 +3,13 @@ using UnityEngine;
 namespace WGame
 {
     [CreateAssetMenu(menuName ="Factories/TreesFactory")]
-    public class TreesFactory : GameObjectFactory, ITreesOwner
+    public class TreesFactory : GameObjectFactory
     {
         [SerializeField] private Tree _tree;
 
         public Tree Get()
         {
             var instance = CreateGameObjectInstance(_tree);
-            instance.OriginFactory = this;
             return instance;
         }
 

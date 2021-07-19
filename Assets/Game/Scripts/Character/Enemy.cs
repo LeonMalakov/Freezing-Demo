@@ -19,7 +19,6 @@ namespace WGame
 
         public Transform Point => _movement.Helper;
         public bool IsAlive => _health > 0;
-        public IEnemiesOwner OriginFactory { get; set; }
 
         protected override void Awake()
         {

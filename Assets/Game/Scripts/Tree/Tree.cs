@@ -14,7 +14,6 @@ namespace WGame
 
         private int _health;
 
-        public ITreesOwner OriginFactory { get; set; }
         public bool IsAlive => _health > 0;
 
         public void Start()
@@ -33,7 +32,7 @@ namespace WGame
 
         public void Recycle()
         {
-            OriginFactory.Reclaim(this);
+            Game.RemoveTree(this);
         }
 
         private void CheckDie()

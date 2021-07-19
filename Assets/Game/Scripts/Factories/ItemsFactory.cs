@@ -3,14 +3,13 @@
 namespace WGame
 {
     [CreateAssetMenu(menuName = "Factories/ItemsFactory")]
-    public class ItemsFactory : GameObjectFactory, IItemsOwner
+    public class ItemsFactory : GameObjectFactory
     {
         [SerializeField] private Item _prefab;
 
         public Item Get()
         {
             var instance = CreateGameObjectInstance(_prefab);
-            instance.OriginFactory = this;
             return instance;
         }
 

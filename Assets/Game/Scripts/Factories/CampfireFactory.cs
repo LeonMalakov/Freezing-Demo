@@ -3,14 +3,13 @@
 namespace WGame
 {
     [CreateAssetMenu(menuName = "Factories/CampfireFactory")]
-    public class CampfireFactory : GameObjectFactory, ICampfireOwner
+    public class CampfireFactory : GameObjectFactory
     {
         [SerializeField] private Campfire _prefab;
 
         public Campfire Get()
         {
             var instance = CreateGameObjectInstance(_prefab);
-            instance.OriginFactory = this;
             return instance;
         }
 

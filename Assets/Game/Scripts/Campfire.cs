@@ -16,8 +16,6 @@ namespace WGame
         public Vector3 Position => transform.position;
         public bool IsAlive => _lifeTime > 0;
 
-        public ICampfireOwner OriginFactory { get; set; }
-
         public event Action Died;
 
         private void Start()
@@ -64,7 +62,7 @@ namespace WGame
 
         public void Recycle()
         {
-            OriginFactory.Reclaim(this);
+            Game.RemoveCampfire(this);
         }
 
         private void CheckPlayerInsideWarmArea()

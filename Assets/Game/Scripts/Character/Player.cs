@@ -41,7 +41,6 @@ namespace WGame
         public Item Grabbed => _grabbing.Grabbed;
         public bool IsGrabbing => _grabbing.IsGrabbing;
         public bool IsAlive => Health > 0;
-        public IPlayerOwner OriginFactory { get; set; }
 
         protected override void Awake()
         {
@@ -87,7 +86,7 @@ namespace WGame
 
         public void Recycle()
         {
-            OriginFactory.Reclaim(this);
+            Game.RemovePlayer(this);
         }
 
         private void CheckDie()

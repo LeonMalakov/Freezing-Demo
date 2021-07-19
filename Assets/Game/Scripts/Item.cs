@@ -6,8 +6,6 @@ namespace WGame
     {
         [SerializeField] [Range(0, 120)] private float _lifeTimeToAdd = 20;
 
-        public IItemsOwner OriginFactory { get; set; }
-
         public float LifeTimeToAdd => _lifeTimeToAdd;
 
         public Vector3 Position => transform.position;
@@ -31,7 +29,7 @@ namespace WGame
 
         public void Recycle()
         {
-            OriginFactory.Reclaim(this);
+            Game.RemoveItem(this);
         }
 
         public void BecomeActive()

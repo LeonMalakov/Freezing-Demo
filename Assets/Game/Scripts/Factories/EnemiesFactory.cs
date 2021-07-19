@@ -3,14 +3,13 @@ using UnityEngine;
 namespace WGame
 {
     [CreateAssetMenu(menuName = "Factories/EnemiesFactory")]
-    public class EnemiesFactory : GameObjectFactory, IEnemiesOwner
+    public class EnemiesFactory : GameObjectFactory
     {
         [SerializeField] private Enemy _prefab;
 
         public Enemy Get()
         {
             var instance = CreateGameObjectInstance(_prefab);
-            instance.OriginFactory = this;
             return instance;
         }
 
