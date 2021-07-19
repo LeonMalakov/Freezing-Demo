@@ -8,7 +8,8 @@ namespace WGame
     public class Enemy : GameBehaviour, IAttackable
     {
         [SerializeField] private CharacterView _view;
-        [SerializeField] [Range(1, 10)] private float _normalMoveSpeed = 5;
+        [SerializeField] [Range(1, 10)] private float _normalMoveSpeed = 3;
+        [SerializeField] [Range(1, 10)] private float _runMoveSpeed = 5.5f;
         [SerializeField] [Range(0, 500)] private int _health = 80;
 
         private CharacterMovement _movement;
@@ -32,6 +33,10 @@ namespace WGame
         }
 
         public void SetMove(Vector2 input) => _movement.SetMove(input);
+
+        public void SetNormalSpeed() => _movement.SetSpeed(_normalMoveSpeed);
+
+        public void SetRunSpeed() => _movement.SetSpeed(_runMoveSpeed);
 
         public void Attack() => _combat.Attack();
 

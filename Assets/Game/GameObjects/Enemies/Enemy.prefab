@@ -51,7 +51,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _view: {fileID: 4603894579331113505}
-  _normalMoveSpeed: 5
+  _normalMoveSpeed: 3
+  _runMoveSpeed: 5.5
   _health: 80
 --- !u!114 &4603894578647804118
 MonoBehaviour:
@@ -101,6 +102,7 @@ MonoBehaviour:
   _targetsMask:
     serializedVersion: 2
     m_Bits: 128
+  _randomMovingTime: 4
 --- !u!114 &7335032951501634514
 MonoBehaviour:
   m_ObjectHideFlags: 0

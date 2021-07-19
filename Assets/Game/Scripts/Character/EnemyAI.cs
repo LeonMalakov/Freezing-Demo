@@ -7,11 +7,16 @@ namespace WGame
     public class EnemyAI : MonoBehaviour
     {
         private const int AttackAngle = 25;
+        private const int UpdateTargetFrames = 4;
         [SerializeField] [Range(0, 20)] private float _targetsDetectionRange = 10;
         [SerializeField] [Range(0, 5)] private float _attackRange = 1.5f;
         [SerializeField] private LayerMask _targetsMask;
+        [SerializeField] [Range(0, 20)] private float _randomMovingTime = 4;
 
         private Enemy _enemy;
+        private byte _fixedUpdates;
+        private Player _target;
+        private float _nextDirectionChangeTime;
 
         private void Awake()
         {
@@ -22,25 +27,61 @@ namespace WGame
         {
             if (_enemy.IsAlive == false) return;
 
-            var target = GetTarget();
+            _fixedUpdates++;
 
-            if (target != null)
+            if (_fixedUpdates % UpdateTargetFrames == 0)
+                UpdateTarget();
+
+            if (_target != null)
             {
-                if (IsTargetInAttackRange(target))
-                {
-                    if (Vector3.Angle(transform.forward, target.transform.position - transform.position) < AttackAngle)
-                        _enemy.Attack();
-                    else
-                        MoveToTarget(target);
-                }
-                else
-                {
-                    MoveToTarget(target);
-                }
+                FollowTarget(_target);
+            }
+            else
+            {
+                WalkAround();
             }
         }
 
-        private bool IsTargetInAttackRange(Player target) 
+        private void UpdateTarget()
+        {
+            var newTarget = GetTarget();
+            if (newTarget != _target)
+            {
+                _target = newTarget;
+
+                if (_target != null)
+                    _enemy.SetRunSpeed();
+                else
+                    _enemy.SetNormalSpeed();
+            }
+        }
+
+        private void WalkAround()
+        {
+            if (Time.timeSinceLevelLoad >= _nextDirectionChangeTime)
+            {
+                _nextDirectionChangeTime = Time.timeSinceLevelLoad + _randomMovingTime;
+                var direction = new Vector2(Random.Range(-1, 2), Random.Range(-1, 2));
+                _enemy.SetMove(direction);
+            }
+        }
+
+        private void FollowTarget(Player target)
+        {
+            if (IsTargetInAttackRange(target))
+            {
+                if (Vector3.Angle(transform.forward, target.transform.position - transform.position) < AttackAngle)
+                    _enemy.Attack();
+                else
+                    MoveToTarget(target);
+            }
+            else
+            {
+                MoveToTarget(target);
+            }
+        }
+
+        private bool IsTargetInAttackRange(Player target)
             => Vector3.Distance(target.transform.position, transform.position) < _attackRange;
 
         private void MoveToTarget(Player target)
