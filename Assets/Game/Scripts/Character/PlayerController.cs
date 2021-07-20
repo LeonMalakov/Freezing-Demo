@@ -1,43 +1,74 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace WGame
 {
     [RequireComponent(typeof(Player))]
+    [RequireComponent(typeof(PlayerInput))]
     public class PlayerController : MonoBehaviour
     {
         private Player _character;
+        private Controls _input;
+        private bool _isAttacking;
 
         private void Awake()
         {
             _character = GetComponent<Player>();
+            _input = new Controls();
+        }
+
+        private void OnEnable()
+        {
+            _input.Enable();
+            _input.Player.Move.performed += Move;
+            _input.Player.Move.canceled += MoveCanceled;
+            _input.Player.Attack.performed += Attack;
+            _input.Player.Attack.canceled += AttackCanceled;
+            _input.Player.Interact.performed += Interact;
+        }
+
+        private void OnDisable()
+        {
+            _input.Disable();
+            _input.Player.Move.performed -= Move;
+            _input.Player.Move.canceled -= MoveCanceled;
+            _input.Player.Attack.performed -= Attack;
+            _input.Player.Attack.canceled -= AttackCanceled;
+            _input.Player.Interact.performed -= Interact;
         }
 
         private void Update()
         {
-            HandleAttack();
-            HandleMovement();
-            HandleInteraction();
-        }
-
-        private void HandleAttack()
-        {
-            if (Input.GetKeyDown(KeyCode.LeftControl))
+            if (_isAttacking)
+            {
                 _character.Attack();
+            }
         }
 
-        private void HandleInteraction()
+        private void Move(InputAction.CallbackContext context)
         {
-            if (Input.GetKeyDown(KeyCode.Space))
-                _character.Interact();
-        }
-
-        private void HandleMovement()
-        {
-            Vector2 input = new Vector2(
-                x: Input.GetKey(KeyCode.A) ? -1 : Input.GetKey(KeyCode.D) ? 1 : 0,
-                y: Input.GetKey(KeyCode.W) ? 1 : Input.GetKey(KeyCode.S) ? -1 : 0);
-
+            var input = context.ReadValue<Vector2>();
             _character.SetMove(input);
+        }
+
+        private void MoveCanceled(InputAction.CallbackContext context)
+        {
+            _character.SetMove(Vector2.zero);
+        }
+
+        private void Attack(InputAction.CallbackContext context)
+        {
+            _isAttacking = true;         
+        }
+
+        private void AttackCanceled(InputAction.CallbackContext context)
+        {
+            _isAttacking = false;
+        }
+
+        private void Interact(InputAction.CallbackContext context)
+        {
+            _character.Interact();
         }
     }
 }
