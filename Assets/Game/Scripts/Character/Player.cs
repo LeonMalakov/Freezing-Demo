@@ -64,6 +64,7 @@ namespace WGame
         public event Action<bool> IsInWarmAreaStateChanged;
         public event Action<IAttackable> Attacking;
         public event Action<IInteractivable> InteractionActiveChanged;
+        public event Action<bool> IsLoadedChanged;
 
         public void Init()
         {
@@ -137,6 +138,8 @@ namespace WGame
             _view.SetIsLoaded(isLoaded);
             _combat.SetIsEnabledState(!isLoaded);
             _weaponModel.SetActive(!isLoaded);
+
+            IsLoadedChanged?.Invoke(isLoaded);
         }
 
         private void OnAttacking(IAttackable target, Vector3 attackDirection)
