@@ -32,6 +32,7 @@ namespace WGame
 
         public void SetAttack()
         {
+            _animator.SetFloat(Constants.CharacterAnimatorController.Parameters.Velocity, 0);
             _animator.SetTrigger(Constants.CharacterAnimatorController.Parameters.Attack);
         }
 
