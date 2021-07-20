@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Linq;
 using UnityEngine;
 
@@ -6,41 +7,41 @@ namespace WGame
 {
     public class Campfire : GameBehaviour, IInteractivable
     {
-        [SerializeField] [Range(0, 120)] private float _startLifeTime = 60;
+        private const float UpdateLifetimeInterval = 1f;
+        private const int LifetimeToRemove = 1;
+        [SerializeField] [Range(0, 300)] private int _maxLifeTime = 120;
+        [SerializeField] [Range(0, 300)] private int _startLifeTime = 45;
         [SerializeField] [Range(0, 100)] private float _warmRadius = 10;
         [SerializeField] private LayerMask _playerLayer;
 
-        private float _lifeTime;
+        private Stat _lifeTime;
         private Player _player;
 
         public bool IsAlive => _lifeTime > 0;
         public Transform Transform => transform;
+        public int MaxLifeTime => _maxLifeTime;
+        public int LifeTime => _lifeTime;
 
+        public event Action<int> LifetimeChanged;
         public event Action Died;
 
         public void Init()
         {
-            _lifeTime = _startLifeTime;
+            _lifeTime = new Stat(_maxLifeTime, OnLifetimeChanged);
+            _lifeTime.Set(_startLifeTime);
 
             Died += () =>
             {
                 if (_player != null)
                     _player.ExitWarmArea();
             };
-        }
 
-        private void Update()
-        {
-            if (IsAlive)
-            {
-                DecreaseLifeTime();
-                CheckDie();
-            }
+            StartCoroutine(UpdateLifetimeLoop());
         }
 
         private void FixedUpdate()
         {
-            if(IsAlive)
+            if (IsAlive)
                 CheckPlayerInsideWarmArea();
         }
 
@@ -50,19 +51,21 @@ namespace WGame
         {
             if (IsAlive == false) return false;
 
+            if (_lifeTime >= _maxLifeTime - item.LifeTimeToAdd) return false;
+
             AddItem(item);
             return true;
+        }
+
+        public void Recycle()
+        {
+            Game.RemoveCampfire(this);
         }
 
         private void AddItem(Item item)
         {
             _lifeTime += item.LifeTimeToAdd;
             item.Recycle();
-        }
-
-        public void Recycle()
-        {
-            Game.RemoveCampfire(this);
         }
 
         private void CheckPlayerInsideWarmArea()
@@ -87,20 +90,30 @@ namespace WGame
             return newPlayer;
         }
 
-        private void DecreaseLifeTime()
-        {
-            _lifeTime -= Time.deltaTime;
-        }
-
-        private void CheckDie()
-        {
-            if (IsAlive == false)
-                Die();
-        }
-
         private void Die()
         {
             Died?.Invoke();
+        }
+
+        private void OnLifetimeChanged(int value)
+        {
+            LifetimeChanged?.Invoke(value);
+
+            if (value <= 0)
+                Die();
+        }
+
+        private IEnumerator UpdateLifetimeLoop()
+        {
+            var waitForSeconds = new WaitForSeconds(UpdateLifetimeInterval);
+
+            while (IsAlive)
+            {
+                if (_lifeTime > 0)
+                    _lifeTime -= LifetimeToRemove;
+
+                yield return waitForSeconds;
+            }
         }
 
         public void BecomeActive()

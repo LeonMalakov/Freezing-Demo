@@ -5,9 +5,9 @@ namespace WGame
 {
     public class Item : GameBehaviour, IInteractivable
     {
-        [SerializeField] [Range(0, 120)] private float _lifeTimeToAdd = 20;
+        [SerializeField] [Range(0, 120)] private int _lifeTimeToAdd = 20;
 
-        public float LifeTimeToAdd => _lifeTimeToAdd;
+        public int LifeTimeToAdd => _lifeTimeToAdd;
         public Transform Transform => transform;
 
         public void Init()

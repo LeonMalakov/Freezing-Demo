@@ -16,6 +16,7 @@ namespace WGame
         private HashSet<Enemy> _enemies = new HashSet<Enemy>();
 
         protected Player Player { get; private set; }
+        protected Campfire Campfire { get; private set; }
         protected IReadOnlyList<ItemSpawnPoint> ItemsSpawnPoints => _itemsSpawnPoints;
         protected IReadOnlyList<TreeSpawnPoint> TreesSpawnPoints => _treesSpawnPoints;
         protected IReadOnlyList<EnemySpawnPoint> EnemiesSpawnPoints => _enemiesSpawnPoints;
@@ -38,9 +39,10 @@ namespace WGame
         protected void CreateMain()
         {
             Player = Game.CreatePlayer(_playerSpawnPoint.transform.position, _playerSpawnPoint.transform.rotation);
-            Game.CreateCampfire(_campfireSpawnPoint.transform.position, _campfireSpawnPoint.transform.rotation);
+            Campfire = Game.CreateCampfire(_campfireSpawnPoint.transform.position, _campfireSpawnPoint.transform.rotation);
 
             _dependencies.Set(Player);
+            _dependencies.Set(Campfire);
         }
     }
 }
