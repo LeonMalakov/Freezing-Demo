@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using UnityEngine;
 
@@ -42,7 +41,7 @@ namespace WGame
 
         public void SetRunSpeed() => _movement.SetSpeed(_runMoveSpeed);
 
-        public void Attack() => _combat.Attack();
+        public void Attack(Vector2 attackDirection) => _combat.Attack(attackDirection);
 
         void IAttackable.TakeDamage(int damage)
         {
@@ -70,11 +69,13 @@ namespace WGame
             StartCoroutine(DisappearLoop());
         }
 
-        private void OnAttacking(IAttackable target)
+        private void OnAttacking(IAttackable target, Vector3 attackDirection)
         {
             _movement.SetIsMovementEnabledState(false);
-            _movement.SetLookAtTarget(target.Transform.position);
+            var lookTarget = target != null ? target.Transform.position : transform.position + attackDirection;
+            _movement.SetLookAtTarget(lookTarget);
             _movement.SetLookAtMode(CharacterMovement.LookAtMode.Target);
+
             _view.SetAttack();
         }
 

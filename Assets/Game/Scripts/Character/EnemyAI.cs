@@ -68,7 +68,7 @@ namespace WGame
         private void FollowTarget(Player target)
         {
             if (IsTargetInAttackRange(target))
-                _enemy.Attack();
+                _enemy.Attack((target.Transform.position - transform.position).normalized);
             else
                 MoveToTarget(target);
         }

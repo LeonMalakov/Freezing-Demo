@@ -10,6 +10,7 @@ namespace WGame
         private Player _character;
         private Controls _input;
         private bool _isAttacking;
+        private Vector2 _attackDirection;
 
         private void Awake()
         {
@@ -41,7 +42,7 @@ namespace WGame
         {
             if (_isAttacking)
             {
-                _character.Attack();
+                _character.Attack(_attackDirection);
             }
         }
 
@@ -58,7 +59,8 @@ namespace WGame
 
         private void Attack(InputAction.CallbackContext context)
         {
-            _isAttacking = true;         
+            _attackDirection = context.ReadValue<Vector2>();
+            _isAttacking = true;
         }
 
         private void AttackCanceled(InputAction.CallbackContext context)

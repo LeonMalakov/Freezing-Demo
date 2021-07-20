@@ -54,9 +54,9 @@ namespace WGame
         public Transform Point => _movement.Helper;
         public Item Grabbed => _grabbing.Grabbed;
         public bool IsGrabbing => _grabbing.IsGrabbing;
-        Transform IGameObject.Transform => transform;
-        bool IAttackable.IsAlive => _health > 0;
-        bool IAttackable.IsPriority => true;
+        public Transform Transform => transform;
+        public bool IsAlive => _health > 0;
+        public bool IsPriority => true;
 
 
         public event Action<int> HealthChanged;
@@ -93,7 +93,7 @@ namespace WGame
 
         public bool Grab(Item item) => _grabbing.Grab(item);
 
-        public void Attack() => _combat.Attack();
+        public void Attack(Vector2 attackDirection) => _combat.Attack(_movement.CalculateDirectionVector(attackDirection));
 
         void IAttackable.TakeDamage(int damage)
         {
@@ -139,14 +139,13 @@ namespace WGame
             _weaponModel.SetActive(!isLoaded);
         }
 
-        private void OnAttacking(IAttackable target)
+        private void OnAttacking(IAttackable target, Vector3 attackDirection)
         {
             _movement.SetIsMovementEnabledState(false);
-            if (target != null)
-            {
-                _movement.SetLookAtTarget(target.Transform.position);
-                _movement.SetLookAtMode(CharacterMovement.LookAtMode.Target);
-            }
+            var lookTarget = target != null ? target.Transform.position : transform.position + attackDirection;
+            _movement.SetLookAtTarget(lookTarget);
+            _movement.SetLookAtMode(CharacterMovement.LookAtMode.Target);
+
             _view.SetAttack();
             Attacking?.Invoke(target);
         }

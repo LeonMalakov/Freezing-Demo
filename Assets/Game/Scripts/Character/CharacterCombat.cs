@@ -7,6 +7,8 @@ namespace WGame
 {
     public class CharacterCombat : MonoBehaviour
     {
+        private const float AttackSectorAngle = 100f;
+
         [SerializeField] private Transform _attackPoint;
         [SerializeField] private Vector3 _attackShape;
         [SerializeField] private LayerMask _layers;
@@ -16,9 +18,9 @@ namespace WGame
         private bool _isEnabled;
         private bool _isAttacking;
         Func<IAttackable, bool> _targetsFilter;
-        private Action<IAttackable> _attacking;
+        private Action<IAttackable, Vector3> _attacking;
 
-        public void Init(Action<IAttackable> attacking, Func<IAttackable, bool> targetsFilter)
+        public void Init(Action<IAttackable, Vector3> attacking, Func<IAttackable, bool> targetsFilter)
         {
             _targetsFilter = targetsFilter;
             _attacking = attacking;
@@ -30,13 +32,13 @@ namespace WGame
             _isEnabled = isEnabled;
         }
 
-        public void Attack()
+        public void Attack(Vector3 attackDirection)
         {
             if (_isEnabled == false || _isAttacking) return;
 
             _isAttacking = true;
-            var closestTarget = GetClosestTarget();
-            _attacking?.Invoke(closestTarget);
+            var closestTarget = GetClosestTargetAtDirection(attackDirection);
+            _attacking?.Invoke(closestTarget, attackDirection);
         }
 
         public void ApplyDamageToTargets()
@@ -60,12 +62,13 @@ namespace WGame
             return FilterTargets(hits.Take<IAttackable>());
         }
 
-        private IAttackable GetClosestTarget()
+        private IAttackable GetClosestTargetAtDirection(Vector3 attackDirection)
         {
             var hits = Physics.OverlapSphere(transform.position, _findingClosestTargetRadius, _layers);
 
             return FilterTargets(hits.Take<IAttackable>())
                 .TakeAlive()
+                .TakeAtSector(transform.position, attackDirection, AttackSectorAngle)
                 .TakePrioritiesIfExist()
                 .FindClosest(transform.position);
         }

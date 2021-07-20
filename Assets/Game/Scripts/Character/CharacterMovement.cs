@@ -22,6 +22,7 @@ namespace WGame
         private bool _isMovementEnabled;
         private LookAtMode _lookAtMode;
         private Vector3 _lookAtTarget;
+        private Quaternion _helperRotation;
         private Action<float> _velocityChanged;
 
         public Transform Helper { get; private set; }
@@ -50,6 +51,13 @@ namespace WGame
         public void SetLookAtTarget(Vector3 lookAt) => _lookAtTarget = lookAt;
 
         public void SetLookAtMode(LookAtMode mode) => _lookAtMode = mode;
+
+        public Vector3 CalculateDirectionVector(Vector2 input)
+        {
+            Vector3 direction = Vector3.ClampMagnitude(new Vector3(input.x, 0, input.y), 1);
+            direction = _helperRotation * direction;
+            return direction;
+        }
 
         private void FixedUpdate()
         {
@@ -105,10 +113,8 @@ namespace WGame
 
         private Vector3 CalculateMoveDirection(RaycastHit hit, Vector3 helperForward)
         {
-            Vector3 moveDirection = Vector3.ClampMagnitude(new Vector3(_input.x, 0, _input.y), 1);
-            var rot1 = Quaternion.LookRotation(helperForward, hit.normal);
-            moveDirection = rot1 * moveDirection;
-            return moveDirection;
+            _helperRotation = Quaternion.LookRotation(helperForward, hit.normal);
+            return CalculateDirectionVector(_input);
         }
 
         private void RotateByGroundNormal(RaycastHit hit)
