@@ -5,7 +5,7 @@ ModelImporter:
   internalIDToNameTable:
   - first:
       74: -623603649343465320
-    second: Man_Anim_Idle
+    second: OIdle
   externalObjects: {}
   materials:
     materialImportMode: 2
@@ -23,8 +23,8 @@ ModelImporter:
     animationImportErrors: 
     animationImportWarnings: "\nClip 'Scene' has import animation warnings that might
       lower retargeting quality:\nNote: Activate translation DOF on avatar to improve
-      retargeting quality.\n\t'Shoulder.R' has translation animation that will be
-      discarded.\n\t'Shoulder.L' has translation animation that will be discarded.\n"
+      retargeting quality.\n\t'Shoulder.L' has translation animation that will be
+      discarded.\n"
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
@@ -38,7 +38,7 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Man_Anim_Idle
+      name: OIdle
       takeName: Scene
       internalID: 0
       firstFrame: 1

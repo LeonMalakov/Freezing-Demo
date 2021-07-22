@@ -36,10 +36,13 @@ namespace WGame
             _animator.SetTrigger(Constants.CharacterAnimatorController.Parameters.Attack);
         }
 
-        public void SetIsDead()
+        public void SetDie()
         {
-            _isDead = true;
-            _animator.SetBool(Constants.CharacterAnimatorController.Parameters.IsDead, true);
+            if (_isDead == false)
+            {
+                _isDead = true;
+                _animator.SetTrigger(Constants.CharacterAnimatorController.Parameters.Die);
+            }
         }
 
         private void AnimEvent_Hit()

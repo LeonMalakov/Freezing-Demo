@@ -116,7 +116,7 @@ namespace WGame
             _movement.SetIsEnabledState(false);
             _combat.SetIsEnabledState(false);
             _interaction.SetIsEnabledState(false);
-            _view.SetIsDead();
+            _view.SetDie();
         }
 
         private void OnHealthChanged(int value)

@@ -64,7 +64,7 @@ namespace WGame
         {
             _movement.SetIsEnabledState(false);
             _combat.SetIsEnabledState(false);
-            _view.SetIsDead();
+            _view.SetDie();
 
             StartCoroutine(DisappearLoop());
         }
