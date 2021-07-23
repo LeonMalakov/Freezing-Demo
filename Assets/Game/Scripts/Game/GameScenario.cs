@@ -54,10 +54,9 @@ namespace WGame
             Debug.Log("exit");
         }
 
-        protected async void RestartGame()
+        protected void RestartGame()
         {
-            await CleanUpAsync();
-            OnPlay();
+            Loading.RestartGame(this);
         }
 
         protected void CreateEnemy(EnemySpawnPoint spawnPoint)

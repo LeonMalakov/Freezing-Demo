@@ -14,14 +14,15 @@ namespace WGame
 
         private static Game instance;
 
-        private void Start()
-        {
-            _scenario.Play();
-        }
-
-        private void OnEnable()
+        public void Init()
         {
             instance = this;
+        }
+
+        public static async Task Play()
+        {
+            instance._scenario.Play();
+            await Task.Delay(1);
         }
 
         public static async Task CleanUpAsync()
