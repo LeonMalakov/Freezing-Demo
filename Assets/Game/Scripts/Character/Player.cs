@@ -195,12 +195,12 @@ namespace WGame
 
         private void UpdateHealthStat()
         {
-            if (_warm > 0)
+            if (_isInWarmArea)
             {
                 if (_health < _maxHealth)
                     _health += _healthToAdd;
             }
-            else
+            else if(_warm <= 0)
             {
                 _health -= _healthToRemove;
             }

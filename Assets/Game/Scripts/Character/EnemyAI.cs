@@ -78,7 +78,7 @@ namespace WGame
 
         private void MoveToTarget(Player target)
         {
-            Vector3 directionToTarget = (target.transform.position - transform.position).normalized;
+            Vector3 directionToTarget = target.transform.position - transform.position;
             directionToTarget = _enemy.Point.InverseTransformDirection(directionToTarget);
             Vector2 moveInput = new Vector2(directionToTarget.x, directionToTarget.z);
             _enemy.SetMove(moveInput);

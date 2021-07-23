@@ -85,7 +85,7 @@ MonoBehaviour:
   _layers:
     serializedVersion: 2
     m_Bits: 128
-  _damage: 15
+  _damage: 6
   _findingClosestTargetRadius: 2.5
 --- !u!114 &4603894578647804116
 MonoBehaviour:
