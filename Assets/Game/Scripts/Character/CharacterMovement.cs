@@ -23,6 +23,7 @@ namespace WGame
         private LookAtMode _lookAtMode;
         private Vector3 _lookAtTarget;
         private Quaternion _helperRotation;
+        private Vector3 _lastFixedUpdatePosition;
         private Action<float> _velocityChanged;
 
         public Transform Helper { get; private set; }
@@ -35,6 +36,7 @@ namespace WGame
             _transform = transform;
             Helper = new GameObject("Helper").transform;
             Helper.parent = transform.parent;
+            _lastFixedUpdatePosition = _rigidbody.position;
 
             SetIsEnabledState(true);
             SetIsMovementEnabledState(true);
@@ -120,7 +122,8 @@ namespace WGame
             Vector3 nextPosition = hit.point + move * Time.fixedDeltaTime;
             _rigidbody.MovePosition(nextPosition);
 
-            _velocityChanged?.Invoke(move.magnitude);
+            _velocityChanged?.Invoke((_rigidbody.position - _lastFixedUpdatePosition).magnitude / Time.fixedDeltaTime);
+            _lastFixedUpdatePosition = _rigidbody.position;
         }
 
         private Vector3 CalculateMoveDirection(RaycastHit hit, Vector3 helperForward)
