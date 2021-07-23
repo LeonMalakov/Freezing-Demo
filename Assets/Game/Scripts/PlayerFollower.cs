@@ -11,11 +11,15 @@ namespace WGame
         public void SetTarget(Player target)
         {
             _target = target;
-            _positionOffset = transform.position - _target.Point.position;
-            _rotationOffset = Quaternion.Inverse(_target.Point.rotation) * transform.rotation;
         }
 
-        private void Update()
+        void Awake()
+        {
+            _positionOffset = transform.position;
+            _rotationOffset = transform.rotation;
+        }
+
+        private void LateUpdate()
         {
             if (_target == null) return;
 

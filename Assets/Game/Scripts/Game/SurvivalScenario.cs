@@ -6,10 +6,24 @@ namespace WGame
     public class SurvivalScenario : GameScenario
     {
         [SerializeField] [Range(0, 100)] private int _targetEnemyCount = 6;
+        [SerializeField] private GameOverMenu _gameOverMenu;
 
-        public override void Play()
+        protected override void OnPlay()
         {
             CreateLevel();
+        }
+
+        protected override void OnFixedUpdate()
+        {
+            if (Enemies.Count < _targetEnemyCount)
+            {
+                TrySpawnEnemyAtRandomPoint();
+            }
+        }
+
+        protected override void OnPlayerDied()
+        {
+            _gameOverMenu.Show(ExitToMainMenu, RestartGame);
         }
 
         private void CreateLevel()
@@ -20,20 +34,12 @@ namespace WGame
             CreateEnemies();
         }
 
-        private void FixedUpdate()
-        {
-            if (Enemies.Count < _targetEnemyCount)
-            {
-                TrySpawnEnemyAtRandomPoint();
-            }
-        }
-
         private bool TrySpawnEnemyAtRandomPoint()
         {
             var spawnPoint = RandomEnemySpawnPointAtPlanetRadiusDistance();
             if (spawnPoint != null)
             {
-                SpawnEnemy(spawnPoint);
+                CreateEnemy(spawnPoint);
                 return true;
             }
 
@@ -59,7 +65,7 @@ namespace WGame
 
             while (Enemies.Count < _targetEnemyCount)
             {
-                SpawnEnemy(spawnPoints[counter++]);
+                CreateEnemy(spawnPoints[counter++]);
 
                 if (counter >= spawnPoints.Count)
                     counter = 0;

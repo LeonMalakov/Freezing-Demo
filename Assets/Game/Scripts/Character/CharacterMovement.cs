@@ -76,6 +76,11 @@ namespace WGame
             }
         }
 
+        private void OnDestroy()
+        {
+            Destroy(Helper.gameObject);
+        }
+
         private void PerformMove()
         {
             if (Physics.Raycast(EarthPlacer.GroundRay(transform), out var hit, EarthPlacer.MaxRaycastDistance, EarthPlacer.GroundMask))

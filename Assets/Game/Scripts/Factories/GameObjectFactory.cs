@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Threading.Tasks;
+using UnityEngine;
 
 namespace WGame
 {
@@ -16,6 +17,19 @@ namespace WGame
             T instance = Instantiate(prefab);
             instance.transform.parent = _container;
             return instance;
+        }
+
+        public async Task CleanUpAsync()
+        {
+            if (_container != null)
+            {
+                Destroy(_container.gameObject);
+
+                while (_container != null)
+                    await Task.Delay(1);
+
+                Debug.Log($"{name} cleaned up");
+            }
         }
     }
 }

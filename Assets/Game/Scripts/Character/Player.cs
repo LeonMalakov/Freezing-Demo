@@ -66,6 +66,7 @@ namespace WGame
         public event Action<IAttackable> Attacking;
         public event Action<IInteractivable> InteractionActiveChanged;
         public event Action<bool> IsLoadedChanged;
+        public event Action Died;
 
         public void Init()
         {
@@ -119,6 +120,7 @@ namespace WGame
             _interaction.SetIsEnabledState(false);
             _view.SetDie();
             DisableCollistion();
+            Died?.Invoke();
         }
 
         private void OnHealthChanged(int value)

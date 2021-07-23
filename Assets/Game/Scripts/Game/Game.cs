@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace WGame
@@ -11,7 +12,7 @@ namespace WGame
         [SerializeField] private TreesFactory _treesFactory;
         [SerializeField] private EnemiesFactory _enemiesFactory;
 
-        private static Game _instance;
+        private static Game instance;
 
         private void Start()
         {
@@ -20,69 +21,89 @@ namespace WGame
 
         private void OnEnable()
         {
-            _instance = this;
+            instance = this;
+        }
+
+        public static async Task CleanUpAsync()
+        {
+            await Task.WhenAll(
+                CleanUpPlayerAsync(),
+                CleanUpCampfireAsync(),
+                CleanUpEnemiesAsync(),
+                CleanUpTreesAsync(),
+                CleanUpItemsAsync());
         }
 
         public static Player CreatePlayer(Vector3 position, Quaternion rotation)
         {
-            var instance = _instance._playerFactory.Get();
+            var instance = Game.instance._playerFactory.Get();
             PlaceInstance(position, rotation, instance);
             return instance;
         }
 
         public static void RemovePlayer(Player toRemove)
         {
-            _instance._playerFactory.Reclaim(toRemove);
+            instance._playerFactory.Reclaim(toRemove);
         }
 
         public static Campfire CreateCampfire(Vector3 position, Quaternion rotation)
         {
-            var instance = _instance._campfireFactory.Get();
+            var instance = Game.instance._campfireFactory.Get();
             PlaceInstance(position, rotation, instance);
             return instance;
         }
 
         public static void RemoveCampfire(Campfire toRemove)
         {
-            _instance._campfireFactory.Reclaim(toRemove);
+            instance._campfireFactory.Reclaim(toRemove);
         }
 
         public static Item CreateItem(Vector3 position, Quaternion rotation)
         {
-            var instance = _instance._itemsFactory.Get();
+            var instance = Game.instance._itemsFactory.Get();
             PlaceInstance(position, rotation, instance);
             return instance;
         }
 
         public static void RemoveItem(Item toRemove)
         {
-            _instance._itemsFactory.Reclaim(toRemove);
+            instance._itemsFactory.Reclaim(toRemove);
         }
 
         public static Tree CreateTree(Vector3 position, Quaternion rotation)
         {
-            var instance = _instance._treesFactory.Get();
+            var instance = Game.instance._treesFactory.Get();
             PlaceInstance(position, rotation, instance);
             return instance;
         }
 
         public static void RemoveTree(Tree toRemove)
         {
-            _instance._treesFactory.Reclaim(toRemove);
+            instance._treesFactory.Reclaim(toRemove);
         }
 
         public static Enemy CreateEnemy(Vector3 position, Quaternion rotation)
         {
-            var instance = _instance._enemiesFactory.Get();
+            var instance = Game.instance._enemiesFactory.Get();
             PlaceInstance(position, rotation, instance);
             return instance;
         }
 
         public static void RemoveEnemy(Enemy toRemove)
         {
-            _instance._scenario.EnemyRemoved(toRemove);
-            _instance._enemiesFactory.Reclaim(toRemove);
+            instance._scenario.EnemyRemoved(toRemove);
+            instance._enemiesFactory.Reclaim(toRemove);
         }
+
+        public static async Task CleanUpPlayerAsync() => await instance._playerFactory.CleanUpAsync();
+
+        public static async Task CleanUpCampfireAsync() => await instance._campfireFactory.CleanUpAsync();
+
+        public static async Task CleanUpEnemiesAsync() => await instance._enemiesFactory.CleanUpAsync();
+
+        public static async Task CleanUpItemsAsync() => await instance._itemsFactory.CleanUpAsync();
+
+        public static async Task CleanUpTreesAsync() => await instance._treesFactory.CleanUpAsync();
 
         private static void PlaceInstance(Vector3 position, Quaternion rotation, GameBehaviour instance)
         {
