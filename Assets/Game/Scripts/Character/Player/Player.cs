@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using UnityEngine;
 
 namespace WGame
@@ -7,61 +6,39 @@ namespace WGame
     [SelectionBase]
     [RequireComponent(typeof(CharacterMovement))]
     [RequireComponent(typeof(CharacterGrabbing))]
-    [RequireComponent(typeof(CharacterInteraction))]
+    [RequireComponent(typeof(PlayerInteraction))]
     [RequireComponent(typeof(CharacterCombat))]
-    [RequireComponent(typeof(PlayerSlowdownArea))]
+    [RequireComponent(typeof(PlayerSlowdown))]
+    [RequireComponent(typeof(PlayerStats))]
     [RequireComponent(typeof(Collider))]
     public class Player : GameBehaviour, IAttackable
     {
-        private const int StatsUpdateTime = 1;
-
         [Header("References")]
         [SerializeField] private CharacterView _view;
         [SerializeField] private GameObject _weaponModel;
 
-        [Header("Stats")]
-        [SerializeField] [Range(1, 10)] private float _normalMoveSpeed = 1;
-        [SerializeField] [Range(1, 10)] private float _loadedMoveSpeed = 1;
-        [SerializeField] [Range(0, 1)] private float _slowdownAreaSpeedMultipler = 0.5f;
-        [SerializeField] [Range(0, 100)] private int _maxHealth = 100;
-        [SerializeField] [Range(0, 100)] private int _maxWarm = 100;
-
-        [Header("Stats updates")]
-        [SerializeField] [Range(0, 50)] private int _healthToAdd = 5;
-        [SerializeField] [Range(0, 50)] private int _healthToRemove = 2;
-        [SerializeField] [Range(0, 50)] private int _warmToAdd = 10;
-        [SerializeField] [Range(0, 50)] private int _warmToRemove = 3;
+        [Header("Parameters")]
+        [SerializeField] [Range(1, 10)] private float _normalMoveSpeed = 6;
+        [SerializeField] [Range(1, 10)] private float _loadedMoveSpeed = 4;
+        [SerializeField] [Range(0, 1)] private float _slowdownAreaSpeedMultipler = 0.6f;
 
         private CharacterMovement _movement;
         private CharacterGrabbing _grabbing;
-        private CharacterInteraction _interaction;
+        private PlayerInteraction _interaction;
         private CharacterCombat _combat;
-        private PlayerSlowdownArea _slowdownArea;
-        private Stat _health;
-        private Stat _warm;
-        private bool _isLoaded;
-        private bool _isInWarmArea;
-        private bool _isSlowdown;
+        private PlayerSlowdown _slowdown;
+        private PlayerStats _stats;
 
-        public int MaxHealth => _maxHealth;
-        public int MaxWarm => _maxWarm;
-        public int Health => _health;
-        public int Warm => _warm;
-        public bool IsInWarmArea
-        {
-            get => _isInWarmArea;
-            set
-            {
-                _isInWarmArea = value;
-                IsInWarmAreaStateChanged?.Invoke(_isInWarmArea);
-            }
-        }
-
+        public int MaxHealth => _stats.MaxHealth;
+        public int MaxWarm => _stats.MaxWarm;
+        public int Health => _stats.Health;
+        public int Warm => _stats.Warm;
+        public bool IsInWarmArea => _stats.IsInWarmArea;
         public Transform Point => _movement.Helper;
         public Item Grabbed => _grabbing.Grabbed;
         public bool IsGrabbing => _grabbing.IsGrabbing;
         public Transform Transform => transform;
-        public bool IsAlive => _health > 0;
+        public bool IsAlive => _stats.IsAlive;
         public bool IsPriority => true;
 
         public event Action<int> HealthChanged;
@@ -76,9 +53,10 @@ namespace WGame
         {
             _movement = GetComponent<CharacterMovement>();
             _grabbing = GetComponent<CharacterGrabbing>();
-            _interaction = GetComponent<CharacterInteraction>();
+            _interaction = GetComponent<PlayerInteraction>();
             _combat = GetComponent<CharacterCombat>();
-            _slowdownArea = GetComponent<PlayerSlowdownArea>();
+            _slowdown = GetComponent<PlayerSlowdown>();
+            _stats = GetComponent<PlayerStats>();
 
             _view.Init(_combat.ApplyDamageToTargets, OnAttackEnded);
             _movement.Init(_view.SetVelocity);
@@ -86,12 +64,8 @@ namespace WGame
             _grabbing.Init(OnIsLoadedChanged);
             _interaction.Init(this, OnInteractionActiveChanged);
             _combat.Init(OnAttacking, targetsFilter: x => true);
-            _slowdownArea.Init(OnSlowdownStateChanged);
-
-            _health = new Stat(_maxHealth, OnHealthChanged);
-            _warm = new Stat(_maxWarm, OnWarmChanged);
-
-            StartCoroutine(StatsUpdateLoop());
+            _slowdown.Init(OnSlowdownStateChanged);
+            _stats.Init(OnHealthChanged, OnWarmChanged, OnIsInWarmAreaChanged);
         }
 
         public void SetMove(Vector2 input) => _movement.SetMove(input);
@@ -104,19 +78,13 @@ namespace WGame
 
         public void Attack(Vector2 attackDirection) => _combat.Attack(_movement.CalculateDirectionVector(attackDirection));
 
-        void IAttackable.TakeDamage(int damage)
-        {
-            _health -= damage;
-        }
+        void IAttackable.TakeDamage(int damage) => _stats.TakeDamage(damage);
 
-        public void EnterWarmArea() => IsInWarmArea = true;
+        public void EnterWarmArea() => _stats.EnterWarmArea();
 
-        public void ExitWarmArea() => IsInWarmArea = false;
+        public void ExitWarmArea() => _stats.ExitWarmArea();
 
-        public void Recycle()
-        {
-            Game.RemovePlayer(this);
-        }
+        public void Recycle() => Game.RemovePlayer(this);
 
         private void Die()
         {
@@ -131,20 +99,18 @@ namespace WGame
 
         private void OnHealthChanged(int value)
         {
-            if (((IAttackable)this).IsAlive == false)
+            if (IsAlive == false)
                 Die();
 
             HealthChanged?.Invoke(value);
         }
 
-        private void OnWarmChanged(int value)
-        {
-            WarmChanged?.Invoke(value);
-        }
+        private void OnWarmChanged(int value) => WarmChanged?.Invoke(value);
+
+        private void OnIsInWarmAreaChanged(bool state) => IsInWarmAreaStateChanged?.Invoke(state);
 
         private void OnIsLoadedChanged(bool isLoaded)
         {
-            _isLoaded = isLoaded;
             _view.SetIsLoaded(isLoaded);
             _combat.SetIsEnabledState(!isLoaded);
             _weaponModel.SetActive(!isLoaded);
@@ -171,60 +137,14 @@ namespace WGame
             _movement.SetIsMovementEnabledState(true);
         }
 
-        private void OnInteractionActiveChanged(IInteractivable target)
-        {
-            InteractionActiveChanged?.Invoke(target);
-        }
+        private void OnInteractionActiveChanged(IInteractivable target) => InteractionActiveChanged?.Invoke(target);
 
-        private void OnSlowdownStateChanged(bool isSlowdown)
-        {
-            _isSlowdown = isSlowdown;
-            ChangeSpeed();
-        }
-
-        private IEnumerator StatsUpdateLoop()
-        {
-            var waitForSeconds = new WaitForSeconds(StatsUpdateTime);
-
-            while (((IAttackable)this).IsAlive)
-            {
-                UpdateWarmStat();
-                UpdateHealthStat();
-                yield return waitForSeconds;
-            }
-        }
-
-        private void UpdateWarmStat()
-        {
-            if (IsInWarmArea)
-            {
-                if (_warm < _maxWarm)
-                    _warm += _warmToAdd;
-            }
-            else
-            {
-                if (_warm > 0)
-                    _warm -= _warmToRemove;
-            }
-        }
-
-        private void UpdateHealthStat()
-        {
-            if (_isInWarmArea)
-            {
-                if (_health < _maxHealth)
-                    _health += _healthToAdd;
-            }
-            else if (_warm <= 0)
-            {
-                _health -= _healthToRemove;
-            }
-        }
+        private void OnSlowdownStateChanged(bool isSlowdown) => ChangeSpeed();
 
         private void ChangeSpeed()
         {
-            float speed = _isLoaded ? _loadedMoveSpeed : _normalMoveSpeed;
-            if (_isSlowdown)
+            float speed = _grabbing.IsGrabbing ? _loadedMoveSpeed : _normalMoveSpeed;
+            if (_slowdown.IsSlowdown)
                 speed *= _slowdownAreaSpeedMultipler;
             _movement.SetSpeed(speed);
         }

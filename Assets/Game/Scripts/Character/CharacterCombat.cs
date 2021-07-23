@@ -64,9 +64,9 @@ namespace WGame
 
         private IAttackable GetClosestTargetAtDirection(Vector3 attackDirection)
         {
-            var hits = Physics.OverlapSphere(transform.position, _findingClosestTargetRadius, _layers);
+            var hits = CollisionUtilities.GetComponentsViaOverlapSphere<IAttackable>(transform.position, _findingClosestTargetRadius, _layers);
 
-            return FilterTargets(hits.Take<IAttackable>())
+            return FilterTargets(hits)
                 .TakeAlive()
                 .TakeAtSector(transform.position, attackDirection, AttackSectorAngle)
                 .TakePrioritiesIfExist()

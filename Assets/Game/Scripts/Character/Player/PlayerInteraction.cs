@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace WGame
 {
-    public class CharacterInteraction : MonoBehaviour
+    public class PlayerInteraction : MonoBehaviour
     {
         [SerializeField] [Range(0, 10)] private float _range = 5;
 

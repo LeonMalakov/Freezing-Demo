@@ -19,7 +19,7 @@ namespace WGame
             _rotationOffset = transform.rotation;
         }
 
-        private void LateUpdate()
+        private void Update()
         {
             if (_target == null) return;
 

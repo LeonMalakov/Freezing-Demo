@@ -3,13 +3,15 @@ using UnityEngine;
 
 namespace WGame
 {
-    public class PlayerSlowdownArea : MonoBehaviour
+    public class PlayerSlowdown : MonoBehaviour
     {
         [SerializeField] [Range(0, 10)] private float _radius = 2;
 
         private Action<bool> _stateChanged;
         private bool _isEnemyInside;
         private Trigger<Enemy> _enemiesTrigger;
+
+        public bool IsSlowdown => _isEnemyInside;
 
         public void Init(Action<bool> stateChanged)
         {

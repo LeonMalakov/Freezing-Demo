@@ -35,7 +35,7 @@ namespace WGame
                     _player.ExitWarmArea();
             };
 
-            _playerTrigger = new PlayerTrigger(transform, _warmRadius,
+            _playerTrigger = new PlayerTrigger(
                 (x) =>
                 {
                     _player = x;
@@ -49,7 +49,7 @@ namespace WGame
         private void FixedUpdate()
         {
             if (IsAlive)
-                _playerTrigger.Check();
+                _playerTrigger.Check(transform.position, _warmRadius);
         }
 
         public bool Interact(Player character) => false;

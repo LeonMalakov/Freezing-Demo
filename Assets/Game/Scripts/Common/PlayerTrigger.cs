@@ -5,24 +5,20 @@ namespace WGame
 {
     public class PlayerTrigger
     {
-        private Transform _transform;
-        private float _radius;
         private Action<Player> _playerEnter;
         private Action<Player> _playerExit;
 
         private Player _player;
 
-        public PlayerTrigger(Transform transform, float radius, Action<Player> playerEnter, Action<Player> playerExit)
+        public PlayerTrigger( Action<Player> playerEnter, Action<Player> playerExit)
         {
-            _transform = transform;
-            _radius = radius;
             _playerEnter = playerEnter;
             _playerExit = playerExit;
         }
 
-        public void Check()
+        public void Check(Vector3 position, float radius)
         {
-            Player newPlayer = CollisionUtilities.GetPlayerViaOverlapSphere(_transform.position, _radius);
+            Player newPlayer = CollisionUtilities.GetPlayerViaOverlapSphere(position, radius);
 
             if (_player != newPlayer)
             {

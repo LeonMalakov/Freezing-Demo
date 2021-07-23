@@ -9,7 +9,6 @@ namespace WGame
         private const int UpdateTargetFrames = 4;
         [SerializeField] [Range(0, 20)] private float _targetsDetectionRange = 10;
         [SerializeField] [Range(0, 5)] private float _attackRange = 1.5f;
-        [SerializeField] private LayerMask _targetsMask;
         [SerializeField] [Range(0, 20)] private float _randomMovingTime = 4;
 
         private Enemy _enemy;
@@ -86,9 +85,10 @@ namespace WGame
 
         private Player GetTarget()
         {
-            var hits = Physics.OverlapSphere(transform.position, _targetsDetectionRange, _targetsMask);
-            var target = hits.Select(x => x.GetComponent<Player>()).Where(x => x != null && ((IAttackable)x).IsAlive).FirstOrDefault();
-            return target;
+            var player = CollisionUtilities.GetPlayerViaOverlapSphere(transform.position, _targetsDetectionRange);
+            if (player != null && player.IsAlive == false)
+                player = null;
+            return player;
         }
 
         private void OnDrawGizmosSelected()
