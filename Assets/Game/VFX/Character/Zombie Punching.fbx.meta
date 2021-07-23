@@ -59,7 +59,7 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.18595335
+      - time: 0.20301819
         functionName: AnimEvent_Hit
         data: 
         objectReferenceParameter: {instanceID: 0}
@@ -566,7 +566,7 @@ ModelImporter:
     - name: mixamorig:Hips
       parentName: Zombie Punching(Clone)
       position: {x: 0.0035690665, y: 2.118, z: -0.11379585}
-      rotation: {x: -0.05937569, y: -0.058517873, z: -0.0017331511, w: 0.9965176}
+      rotation: {x: -0.18447423, y: -0.1654239, z: -0.014620885, w: 0.9687056}
       scale: {x: 1, y: 1, z: 1}
     - name: mixamorig:LeftUpLeg
       parentName: mixamorig:Hips
@@ -581,7 +581,7 @@ ModelImporter:
     - name: mixamorig:LeftFoot
       parentName: mixamorig:LeftLeg
       position: {x: -0.004815, y: -0.85416096, z: -0.051265996}
-      rotation: {x: -0.32104385, y: -0.002334084, z: 0.062158376, w: 0.9450195}
+      rotation: {x: -0.08755224, y: 0.012486995, z: 0.06093596, w: 0.9942161}
       scale: {x: 1, y: 1, z: 1}
     - name: mixamorig:LeftToeBase
       parentName: mixamorig:LeftFoot
@@ -596,7 +596,7 @@ ModelImporter:
     - name: mixamorig:RightUpLeg
       parentName: mixamorig:Hips
       position: {x: 0.184363, y: -0.144167, z: 0.001605}
-      rotation: {x: -0.06192031, y: 0.1833188, z: 0.07121605, w: 0.9785134}
+      rotation: {x: -0.18913098, y: 0.17245306, z: 0.09453807, w: 0.9620561}
       scale: {x: 1, y: 1, z: 1}
     - name: mixamorig:RightLeg
       parentName: mixamorig:RightUpLeg
@@ -606,7 +606,7 @@ ModelImporter:
     - name: mixamorig:RightFoot
       parentName: mixamorig:RightLeg
       position: {x: -0.005261, y: -0.852452, z: -0.054264}
-      rotation: {x: -0.26032346, y: -0.053666387, z: -0.11452452, w: 0.9572021}
+      rotation: {x: -0.0750871, y: -0.07430639, z: -0.102345, w: 0.9891239}
       scale: {x: 1, y: 1, z: 1}
     - name: mixamorig:RightToeBase
       parentName: mixamorig:RightFoot
@@ -621,12 +621,12 @@ ModelImporter:
     - name: mixamorig:Spine
       parentName: mixamorig:Hips
       position: {x: 0.002002, y: 0.198047, z: -0.038900997}
-      rotation: {x: 0.099411026, y: 0.035387855, z: 0.00932955, w: 0.99437326}
+      rotation: {x: 0.1557922, y: 0.034731995, z: 0.0046590073, w: 0.9871681}
       scale: {x: 1, y: 1, z: 1}
     - name: mixamorig:Spine1
       parentName: mixamorig:Spine
       position: {x: 0.0027039999, y: 0.235003, z: -0.023603}
-      rotation: {x: 0.08016322, y: 0.023481866, z: -0.0015962779, w: 0.9965039}
+      rotation: {x: 0.079035796, y: -0.04641651, z: -0.00017688387, w: 0.9957906}
       scale: {x: 1, y: 1, z: 1}
     - name: mixamorig:Spine2
       parentName: mixamorig:Spine1
@@ -656,7 +656,7 @@ ModelImporter:
     - name: mixamorig:LeftHandIndex1
       parentName: mixamorig:LeftHand
       position: {x: -0.27224, y: -0.002989, z: 0.098593}
-      rotation: {x: 0.0053540417, y: 0.027510362, z: 0.04156586, w: 0.9987426}
+      rotation: {x: 0.0053540464, y: 0.027510362, z: 0.0415659, w: 0.9987426}
       scale: {x: 1, y: 1, z: 1}
     - name: mixamorig:LeftHandIndex2
       parentName: mixamorig:LeftHandIndex1
@@ -761,7 +761,7 @@ ModelImporter:
     - name: mixamorig:Head
       parentName: mixamorig:Neck
       position: {x: -0.010419, y: 0.22231, z: 0.065135}
-      rotation: {x: -0.44324437, y: -0.026047638, z: -0.029984266, w: 0.89552045}
+      rotation: {x: -0.33849645, y: -0.026995974, z: -0.0313099, w: 0.9400591}
       scale: {x: 1, y: 1, z: 1}
     - name: mixamorig:HeadTop_End
       parentName: mixamorig:Head
@@ -886,7 +886,7 @@ ModelImporter:
     - name: mixamorig:RightHandThumb2
       parentName: mixamorig:RightHandThumb1
       position: {x: 0.079552, y: -0.040356003, z: 0.052472}
-      rotation: {x: -0.04796187, y: 0.046857353, z: -0.008191277, w: 0.99771595}
+      rotation: {x: -0.047961794, y: 0.046857353, z: -0.008191268, w: 0.99771595}
       scale: {x: 1, y: 1, z: 1}
     - name: mixamorig:RightHandThumb3
       parentName: mixamorig:RightHandThumb2
