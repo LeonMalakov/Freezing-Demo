@@ -9,6 +9,7 @@ namespace WGame
     [RequireComponent(typeof(CharacterGrabbing))]
     [RequireComponent(typeof(CharacterInteraction))]
     [RequireComponent(typeof(CharacterCombat))]
+    [RequireComponent(typeof(Collider))]
     public class Player : GameBehaviour, IAttackable
     {
         private const int StatsUpdateTime = 1;
@@ -117,6 +118,7 @@ namespace WGame
             _combat.SetIsEnabledState(false);
             _interaction.SetIsEnabledState(false);
             _view.SetDie();
+            DisableCollistion();
         }
 
         private void OnHealthChanged(int value)
@@ -202,6 +204,11 @@ namespace WGame
             {
                 _health -= _healthToRemove;
             }
+        }
+
+        private void DisableCollistion()
+        {
+            GetComponent<Collider>().enabled = false;
         }
     }
 }

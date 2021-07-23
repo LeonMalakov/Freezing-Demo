@@ -6,6 +6,7 @@ namespace WGame
     [SelectionBase]
     [RequireComponent(typeof(CharacterMovement))]
     [RequireComponent(typeof(CharacterCombat))]
+    [RequireComponent(typeof(Collider))]
     public class Enemy : GameBehaviour, IAttackable
     {
         [SerializeField] private CharacterView _view;
@@ -65,6 +66,7 @@ namespace WGame
             _movement.SetIsEnabledState(false);
             _combat.SetIsEnabledState(false);
             _view.SetDie();
+            DisableCollision();
 
             StartCoroutine(DisappearLoop());
         }
@@ -90,6 +92,11 @@ namespace WGame
         {
             yield return new WaitForSeconds(_disappearTime);
             Recycle();
+        }
+
+        private void DisableCollision()
+        {
+            GetComponent<Collider>().enabled = false;
         }
     }
 }

@@ -40,7 +40,15 @@ namespace WGame
             SetIsMovementEnabledState(true);
         }
 
-        public void SetIsEnabledState(bool isEnabled) => _isEnabled = isEnabled;
+        public void SetIsEnabledState(bool isEnabled)
+        {
+            if (_isEnabled != isEnabled)
+            {
+                _isEnabled = isEnabled;
+
+                _rigidbody.isKinematic = !_isEnabled;
+            }
+        }
 
         public void SetIsMovementEnabledState(bool isEnabled) => _isMovementEnabled = isEnabled;
 
@@ -61,10 +69,9 @@ namespace WGame
 
         private void FixedUpdate()
         {
-            ResetRigidbodyVelocities();
-
             if (_isEnabled)
             {
+                ResetRigidbodyVelocities();
                 PerformMove();
             }
         }
@@ -80,12 +87,12 @@ namespace WGame
 
                 RotateByGroundNormal(hit);
 
-                if(_lookAtMode == LookAtMode.MoveDirection)
+                if (_lookAtMode == LookAtMode.MoveDirection)
                     RotateToDirection(hit, moveDirection);
                 else
                     RotateToDirection(hit, _lookAtTarget - transform.position);
 
-                if(_isMovementEnabled)
+                if (_isMovementEnabled)
                     Move(hit, moveDirection);
             }
         }
