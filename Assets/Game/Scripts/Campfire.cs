@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Linq;
 using UnityEngine;
 
 namespace WGame
@@ -12,10 +11,10 @@ namespace WGame
         [SerializeField] [Range(0, 300)] private int _maxLifeTime = 120;
         [SerializeField] [Range(0, 300)] private int _startLifeTime = 45;
         [SerializeField] [Range(0, 100)] private float _warmRadius = 10;
-        [SerializeField] private LayerMask _playerLayer;
 
         private Stat _lifeTime;
         private Player _player;
+        private PlayerTrigger _playerTrigger;
 
         public bool IsAlive => _lifeTime > 0;
         public Transform Transform => transform;
@@ -36,13 +35,21 @@ namespace WGame
                     _player.ExitWarmArea();
             };
 
+            _playerTrigger = new PlayerTrigger(transform, _warmRadius,
+                (x) =>
+                {
+                    _player = x;
+                    x.EnterWarmArea();
+                },
+                (x) => x.ExitWarmArea());
+
             StartCoroutine(UpdateLifetimeLoop());
         }
 
         private void FixedUpdate()
         {
             if (IsAlive)
-                CheckPlayerInsideWarmArea();
+                _playerTrigger.Check();
         }
 
         public bool Interact(Player character) => false;
@@ -66,28 +73,6 @@ namespace WGame
         {
             _lifeTime += item.LifeTimeToAdd;
             item.Recycle();
-        }
-
-        private void CheckPlayerInsideWarmArea()
-        {
-            Player newPlayer = GetPlayer();
-
-            if (_player != newPlayer)
-            {
-                if (newPlayer == null && _player != null)
-                    _player.ExitWarmArea();
-                else
-                    newPlayer.EnterWarmArea();
-
-                _player = newPlayer;
-            }
-        }
-
-        private Player GetPlayer()
-        {
-            var hits = Physics.OverlapSphere(transform.position, _warmRadius, _playerLayer);
-            var newPlayer = hits.Select(x => x.GetComponent<Player>()).FirstOrDefault(x => x != null);
-            return newPlayer;
         }
 
         private void Die()

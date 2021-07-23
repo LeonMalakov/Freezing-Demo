@@ -9,6 +9,7 @@ namespace WGame
     [RequireComponent(typeof(CharacterGrabbing))]
     [RequireComponent(typeof(CharacterInteraction))]
     [RequireComponent(typeof(CharacterCombat))]
+    [RequireComponent(typeof(PlayerSlowdownArea))]
     [RequireComponent(typeof(Collider))]
     public class Player : GameBehaviour, IAttackable
     {
@@ -21,6 +22,7 @@ namespace WGame
         [Header("Stats")]
         [SerializeField] [Range(1, 10)] private float _normalMoveSpeed = 1;
         [SerializeField] [Range(1, 10)] private float _loadedMoveSpeed = 1;
+        [SerializeField] [Range(0, 1)] private float _slowdownAreaSpeedMultipler = 0.5f;
         [SerializeField] [Range(0, 100)] private int _maxHealth = 100;
         [SerializeField] [Range(0, 100)] private int _maxWarm = 100;
 
@@ -34,9 +36,12 @@ namespace WGame
         private CharacterGrabbing _grabbing;
         private CharacterInteraction _interaction;
         private CharacterCombat _combat;
+        private PlayerSlowdownArea _slowdownArea;
         private Stat _health;
         private Stat _warm;
+        private bool _isLoaded;
         private bool _isInWarmArea;
+        private bool _isSlowdown;
 
         public int MaxHealth => _maxHealth;
         public int MaxWarm => _maxWarm;
@@ -59,7 +64,6 @@ namespace WGame
         public bool IsAlive => _health > 0;
         public bool IsPriority => true;
 
-
         public event Action<int> HealthChanged;
         public event Action<int> WarmChanged;
         public event Action<bool> IsInWarmAreaStateChanged;
@@ -74,6 +78,7 @@ namespace WGame
             _grabbing = GetComponent<CharacterGrabbing>();
             _interaction = GetComponent<CharacterInteraction>();
             _combat = GetComponent<CharacterCombat>();
+            _slowdownArea = GetComponent<PlayerSlowdownArea>();
 
             _view.Init(_combat.ApplyDamageToTargets, OnAttackEnded);
             _movement.Init(_view.SetVelocity);
@@ -81,6 +86,7 @@ namespace WGame
             _grabbing.Init(OnIsLoadedChanged);
             _interaction.Init(this, OnInteractionActiveChanged);
             _combat.Init(OnAttacking, targetsFilter: x => true);
+            _slowdownArea.Init(OnSlowdownStateChanged);
 
             _health = new Stat(_maxHealth, OnHealthChanged);
             _warm = new Stat(_maxWarm, OnWarmChanged);
@@ -119,7 +125,7 @@ namespace WGame
             _combat.SetIsEnabledState(false);
             _interaction.SetIsEnabledState(false);
             _view.SetDie();
-            DisableCollistion();
+            DisableCollision();
             Died?.Invoke();
         }
 
@@ -138,10 +144,11 @@ namespace WGame
 
         private void OnIsLoadedChanged(bool isLoaded)
         {
-            _movement.SetSpeed(isLoaded ? _loadedMoveSpeed : _normalMoveSpeed);
+            _isLoaded = isLoaded;
             _view.SetIsLoaded(isLoaded);
             _combat.SetIsEnabledState(!isLoaded);
             _weaponModel.SetActive(!isLoaded);
+            ChangeSpeed();
 
             IsLoadedChanged?.Invoke(isLoaded);
         }
@@ -167,6 +174,12 @@ namespace WGame
         private void OnInteractionActiveChanged(IInteractivable target)
         {
             InteractionActiveChanged?.Invoke(target);
+        }
+
+        private void OnSlowdownStateChanged(bool isSlowdown)
+        {
+            _isSlowdown = isSlowdown;
+            ChangeSpeed();
         }
 
         private IEnumerator StatsUpdateLoop()
@@ -202,15 +215,20 @@ namespace WGame
                 if (_health < _maxHealth)
                     _health += _healthToAdd;
             }
-            else if(_warm <= 0)
+            else if (_warm <= 0)
             {
                 _health -= _healthToRemove;
             }
         }
 
-        private void DisableCollistion()
+        private void ChangeSpeed()
         {
-            GetComponent<Collider>().enabled = false;
+            float speed = _isLoaded ? _loadedMoveSpeed : _normalMoveSpeed;
+            if (_isSlowdown)
+                speed *= _slowdownAreaSpeedMultipler;
+            _movement.SetSpeed(speed);
         }
+
+        private void DisableCollision() => GetComponent<Collider>().enabled = false;
     }
 }

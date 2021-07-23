@@ -94,9 +94,6 @@ namespace WGame
             Recycle();
         }
 
-        private void DisableCollision()
-        {
-            GetComponent<Collider>().enabled = false;
-        }
+        private void DisableCollision() => GetComponent<Collider>().enabled = false;
     }
 }
