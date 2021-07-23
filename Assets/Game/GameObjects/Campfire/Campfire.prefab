@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4302864399942658308}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.2, z: 0}
   m_LocalScale: {x: 1.5, y: 0.4, z: 1.5}
   m_Children: []
   m_Father: {fileID: 4302864400376970607}
@@ -122,8 +122,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4302864400634561949}
   - component: {fileID: 4302864400634561950}
-  - component: {fileID: 4302864400634561948}
   - component: {fileID: 4302864400634561947}
+  - component: {fileID: 6685318233447173741}
   m_Layer: 0
   m_Name: Campfire
   m_TagString: Untagged
@@ -138,8 +138,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4302864400634561951}
-  m_LocalRotation: {x: -0, y: -0, z: -0.082683116, w: 0.9965759}
-  m_LocalPosition: {x: 4.12, y: -0.34182587, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4302864400376970607}
@@ -158,24 +158,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3c108b6ac5da054fbca213f056e6369, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _maxLifeTime: 120
   _startLifeTime: 60
   _warmRadius: 8
-  _playerLayer:
-    serializedVersion: 2
-    m_Bits: 128
---- !u!65 &4302864400634561948
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4302864400634561951}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 2, y: 1, z: 2}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &4302864400634561947
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -188,3 +173,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e4ef5a76e856cb4e8314fad5ea58c2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!136 &6685318233447173741
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4302864400634561951}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 1
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 1, z: 0}
