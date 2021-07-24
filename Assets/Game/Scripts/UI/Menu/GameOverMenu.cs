@@ -107,7 +107,7 @@ namespace WGame
             while (t < 1)
             {
                 t += Time.deltaTime / time;
-                scale.y = Mathf.Lerp(from, to, Ease.EaseIn(t));
+                scale.y = Mathf.Lerp(from, to, Ease.InSine(t));
                 _panel.localScale = scale;
                 yield return null;
             }

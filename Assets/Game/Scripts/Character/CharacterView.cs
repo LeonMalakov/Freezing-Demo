@@ -64,7 +64,7 @@ namespace WGame
             while (t < 1)
             {
                 t += Time.deltaTime / time;
-                color.a = Mathf.Lerp(1f, 0f, Ease.EaseOut(t));
+                color.a = Mathf.Lerp(1f, 0f, Ease.OutSine(t));
                 material.color = color;
                 yield return null;
             }

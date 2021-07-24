@@ -47,7 +47,7 @@ namespace WGame
             while(t < 1)
             {
                 t += Time.deltaTime / time;
-                _canvasGroup.alpha = Mathf.Lerp(from, to, Ease.EaseIn(t));
+                _canvasGroup.alpha = Mathf.Lerp(from, to, Ease.InSine(t));
                 yield return null;
             }
         }
