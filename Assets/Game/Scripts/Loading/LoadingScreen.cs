@@ -31,21 +31,17 @@ namespace WGame
 
         private async Task Show()
         {
-            var completionSource = new TaskCompletionSource<bool>();
-            StartCoroutine(AnimationLoop(0, 1, AnimationTime, completionSource));
             _canvas.enabled = true;
-            await completionSource.Task;
+            await this.WaitForCoroutine(AnimationLoop(0, 1, AnimationTime));
         }
 
         private async Task Hide()
         {
-            var completionSource = new TaskCompletionSource<bool>();
-            StartCoroutine(AnimationLoop(1, 0, AnimationTime, completionSource));
-            await completionSource.Task;
+            await this.WaitForCoroutine(AnimationLoop(1, 0, AnimationTime));
             _canvas.enabled = false;
         }
 
-        private IEnumerator AnimationLoop(float from, float to, float time, TaskCompletionSource<bool> completionSource)
+        private IEnumerator AnimationLoop(float from, float to, float time)
         {
             float t = 0;
             while(t < 1)
@@ -54,8 +50,6 @@ namespace WGame
                 _canvasGroup.alpha = Mathf.Lerp(from, to, Ease.EaseIn(t));
                 yield return null;
             }
-
-            completionSource.SetResult(true);
         }
     }
 }
