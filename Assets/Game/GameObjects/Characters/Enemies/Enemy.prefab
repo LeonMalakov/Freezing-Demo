@@ -54,7 +54,7 @@ MonoBehaviour:
   _normalMoveSpeed: 3
   _runMoveSpeed: 5.6
   _health: 80
-  _disappearTime: 10
+  _disappearTime: 4
 --- !u!114 &4603894578647804118
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -101,9 +101,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _targetsDetectionRange: 10
   _attackRange: 1.5
-  _targetsMask:
-    serializedVersion: 2
-    m_Bits: 128
   _randomMovingTime: 4
 --- !u!114 &7335032951501634514
 MonoBehaviour:
@@ -220,6 +217,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b23f3448cec597546bf1507de2174271, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _renderer: {fileID: 6320129238898130813}
+  _transparentMaterial: {fileID: 2100000, guid: 5f40e75a4cbe96c4d8a7a5455b606009, type: 2}
 --- !u!1001 &7389837863180589117
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -271,6 +270,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -5676674714017634496, guid: c96f94233ba44dc41adb09a78707b167, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 80c2c6d6a00fcf34689c6edbde6f1041, type: 2}
     - target: {fileID: 919132149155446097, guid: c96f94233ba44dc41adb09a78707b167, type: 3}
       propertyPath: m_Name
       value: Man01
@@ -298,5 +301,10 @@ Transform:
 --- !u!4 &3896555445658371499 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5809259696813022614, guid: c96f94233ba44dc41adb09a78707b167, type: 3}
+  m_PrefabInstance: {fileID: 7389837863180589117}
+  m_PrefabAsset: {fileID: 0}
+--- !u!137 &6320129238898130813 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -5676674714017634496, guid: c96f94233ba44dc41adb09a78707b167, type: 3}
   m_PrefabInstance: {fileID: 7389837863180589117}
   m_PrefabAsset: {fileID: 0}

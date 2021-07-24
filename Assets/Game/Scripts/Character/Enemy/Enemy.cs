@@ -91,7 +91,7 @@ namespace WGame
         private IEnumerator DisappearLoop()
         {
             yield return new WaitForSeconds(_disappearTime);
-            Recycle();
+            _view.Disappear(callback: () => Recycle());
         }
 
         private void DisableCollision() => GetComponent<Collider>().enabled = false;
