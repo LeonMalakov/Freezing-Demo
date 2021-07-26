@@ -78,7 +78,7 @@ namespace WGame
 
         public void Attack(Vector2 attackDirection) => _combat.Attack(_movement.CalculateDirectionVector(attackDirection));
 
-        void IAttackable.TakeDamage(int damage) => _stats.TakeDamage(damage);
+        void IAttackable.TakeDamage(int damage, Vector3 position) => _stats.TakeDamage(damage);
 
         public void EnterWarmArea() => _stats.EnterWarmArea();
 

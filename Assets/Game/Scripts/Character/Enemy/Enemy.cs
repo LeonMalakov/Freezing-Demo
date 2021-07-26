@@ -44,7 +44,7 @@ namespace WGame
 
         public void Attack(Vector2 attackDirection) => _combat.Attack(attackDirection);
 
-        void IAttackable.TakeDamage(int damage)
+        void IAttackable.TakeDamage(int damage, Vector3 position)
         {
             _health -= damage;
             CheckDie();

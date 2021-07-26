@@ -25,12 +25,12 @@ namespace WGame
             _health = _maxHealth;
         }
 
-        void IAttackable.TakeDamage(int damage)
+        void IAttackable.TakeDamage(int damage, Vector3 position)
         {
             if (((IAttackable)this).IsAlive)
             {
                 _health -= damage;
-                CheckDie();
+                CheckDie(position);
             }
         }
 
@@ -39,15 +39,18 @@ namespace WGame
             Game.RemoveTree(this);
         }
 
-        private void CheckDie()
+        private void CheckDie(Vector3 attackerPosition)
         {
             if (((IAttackable)this).IsAlive == false)
-                Die();
+                Die(attackerPosition);
         }
 
-        private void Die()
-        {           
-            _view.Die(callback: () => SpawnItems());
+        private void Die(Vector3 attackerPosition)
+        {
+            var fallDirection = -transform.InverseTransformPoint(attackerPosition).normalized;
+            fallDirection.y = 0;
+
+            _view.Die(fallDirection, callback: () => SpawnItems(fallDirection));
             StartCoroutine(RecoverLoop());
         }
 
@@ -56,12 +59,12 @@ namespace WGame
             _view.Recover(callback: () => _health = _maxHealth);
         }
 
-        private void SpawnItems()
+        private void SpawnItems(Vector3 fallDirection)
         {
             for (int i = 0; i < _dropItemsCount; i++)
             {
                 var displacement =
-                    Vector3.forward * DroppedItemsStep * (i + 1)
+                    fallDirection * DroppedItemsStep * (i + 1)
                     + Noise();
 
                 var position = transform.position + transform.TransformDirection(displacement);

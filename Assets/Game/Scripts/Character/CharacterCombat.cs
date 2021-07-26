@@ -47,7 +47,7 @@ namespace WGame
 
             foreach (var target in targets)
             {
-                target.TakeDamage(_damage);
+                target.TakeDamage(_damage, transform.position);
             }
         }
 
