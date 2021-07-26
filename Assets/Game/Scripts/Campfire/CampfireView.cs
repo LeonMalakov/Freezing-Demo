@@ -5,6 +5,8 @@ namespace WGame
     public class CampfireView : MonoBehaviour
     {
         [SerializeField] private MeshRenderer[] _logs;
+        [SerializeField] private CampfireParticleSystem _particleSystem;
+
         private int _activeLogsCount;
 
         public void Init()
@@ -13,12 +15,18 @@ namespace WGame
                 log.enabled = false;
         }
 
-        public void UpdateLogs(int lifetime, int maxLifetime)
+        public void UpdateView(int lifetime, int maxLifetime)
         {
             float lifetimeUnitsPerLog = _logs.Length / (float)maxLifetime;
             int activeLogs = Mathf.CeilToInt(lifetimeUnitsPerLog * lifetime);
 
             EnableLogs(activeLogs);
+            _particleSystem.UpdatePower(lifetime / (float)maxLifetime);
+        }
+
+        public void Die()
+        {
+            _particleSystem.Stop();
         }
 
         private void EnableLogs(int targetActiveLogsCount)

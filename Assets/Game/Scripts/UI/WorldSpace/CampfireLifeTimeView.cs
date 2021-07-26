@@ -12,7 +12,7 @@ namespace WGame
 
         private void OnDisable() => TryUnsubscribe();
 
-        private void LateUpdate() => transform.LookAt(Camera.main.transform.position);
+        private void LateUpdate() => LookAtCamera();
 
         private void TrySubscribe()
         {
@@ -36,5 +36,8 @@ namespace WGame
         private void Unsubscribe() => _campfire.LifetimeChanged -= OnValueChanged;
 
         private int GetMaxValue() => _campfire.MaxLifeTime;
+
+        private void LookAtCamera() 
+            => transform.rotation = Quaternion.LookRotation(Camera.main.transform.position - transform.position, _campfire.Transform.up);
     }
 }

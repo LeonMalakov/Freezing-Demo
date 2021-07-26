@@ -79,12 +79,14 @@ namespace WGame
             if (_player != null)
                 _player.ExitWarmArea();
 
+            _view.Die();
+
             Died?.Invoke();
         }
 
         private void OnLifetimeChanged(int value)
         {
-            _view.UpdateLogs(value, _maxLifeTime);
+            _view.UpdateView(value, _maxLifeTime);
 
             LifetimeChanged?.Invoke(value);
 
