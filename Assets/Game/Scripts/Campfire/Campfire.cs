@@ -8,6 +8,9 @@ namespace WGame
     {
         private const float UpdateLifetimeInterval = 1f;
         private const int LifetimeToRemove = 1;
+
+        [SerializeField] private CampfireView _view;
+
         [SerializeField] [Range(0, 300)] private int _maxLifeTime = 120;
         [SerializeField] [Range(0, 300)] private int _startLifeTime = 45;
         [SerializeField] [Range(0, 100)] private float _warmRadius = 10;
@@ -26,22 +29,18 @@ namespace WGame
 
         public void Init()
         {
+            _view.Init();
+
             _lifeTime = new Stat(_maxLifeTime, OnLifetimeChanged);
             _lifeTime.Set(_startLifeTime);
 
-            Died += () =>
-            {
-                if (_player != null)
-                    _player.ExitWarmArea();
-            };
-
             _playerTrigger = new PlayerTrigger(
-                (x) =>
+                playerEnter: (x) =>
                 {
                     _player = x;
                     x.EnterWarmArea();
                 },
-                (x) => x.ExitWarmArea());
+                playerExit: (x) => x.ExitWarmArea());
 
             StartCoroutine(UpdateLifetimeLoop());
         }
@@ -77,11 +76,16 @@ namespace WGame
 
         private void Die()
         {
+            if (_player != null)
+                _player.ExitWarmArea();
+
             Died?.Invoke();
         }
 
         private void OnLifetimeChanged(int value)
         {
+            _view.UpdateLogs(value, _maxLifeTime);
+
             LifetimeChanged?.Invoke(value);
 
             if (value <= 0)
