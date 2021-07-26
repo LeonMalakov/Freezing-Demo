@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 844e228d3279db44893a99d04d90d46a, type: 3}
   m_Name: TreesFactory
   m_EditorClassIdentifier: 
-  _tree: {fileID: 3370415333825055699, guid: 888d067679adba4438db1625e6b82006, type: 3}
+  _prefabs:
+  - {fileID: 3370415333825055699, guid: 888d067679adba4438db1625e6b82006, type: 3}
